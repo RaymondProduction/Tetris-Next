@@ -3,7 +3,7 @@ require(['jquery','jcanvas'], function(){
 	var x,y,canvas,rectangle,height,width;
 
 
-	$(document).ready(function () {
+	$(window).ready(function () {
    height=$('#space').height();
    width=$('#space').width();
 	 x=width/2;
@@ -15,7 +15,7 @@ require(['jquery','jcanvas'], function(){
 		  height: 20
 	  });
 	});
-	$(document).keydown(function( event ){
+	$(window).keydown(function( event ){
        $('#space').clearCanvas();
        if (event.keyCode==37 && x>10) x-=1;
        if (event.keyCode==38 && y>10) y-=1;
