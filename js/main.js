@@ -2,7 +2,8 @@ require(['jquery','jcanvas'], function(){
 
   var x,y,canvas,rectangle,height,width;
 
-  window.onload = showSquare();
+  showSquare();
+  //window.onload = showSquare();
   //$(window).load(showSquare());
   //$(document).ready(showSquare());
 
@@ -10,7 +11,6 @@ require(['jquery','jcanvas'], function(){
     canvas = $('#space');
     height=canvas.height();
     width=canvas.width();
-    console.log("Hi");
     x=width/2;
     y=height/2;
     canvas.drawRect({
@@ -22,7 +22,6 @@ require(['jquery','jcanvas'], function(){
   };
 
 	$(document).keydown(function( event ){
-     // console.log("Hi");
        canvas.clearCanvas();
        if (event.keyCode==37 && x>10) x-=1;
        if (event.keyCode==38 && y>10) y-=1;
