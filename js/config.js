@@ -4,6 +4,7 @@ requirejs.config({
 
   // Parametr for short id
   paths: {
-    'jquery': 'vendor/jquery-2.2.4.min'
+    'jquery': 'vendor/jquery-2.2.4.min',
+    'canvas': 'vendor/bower_components/canvas-5-polyfill/canvas'
   }
 });

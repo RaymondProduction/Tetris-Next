@@ -1,4 +1,4 @@
-require(['jquery'], function() {
+require(['jquery','canvas'], function() {
 
   var x, y, canvas, rectangle, height, width;
 
