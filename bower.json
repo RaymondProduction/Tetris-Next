@@ -1,0 +1,20 @@
+{
+  "name": "Tetris-Next",
+  "homepage": "https://github.com/RaymondProduction/Tetris-Next",
+  "authors": [
+    "raymondproduction@ukr.net <raymondproduction@ukr.net>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "canvas-5-polyfill": "^0.1.1"
+  }
+}

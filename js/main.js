@@ -1,37 +1,43 @@
-require(['jquery','jcanvas'], function(){
+require(['jquery'], function() {
 
-  var x,y,canvas,rectangle,height,width;
+  var x, y, canvas, rectangle, height, width;
 
-  showSquare();
+  //showSquare();
   //window.onload = showSquare();
   //$(window).load(showSquare());
   //$(document).ready(showSquare());
 
-  function showSquare(){
-    canvas = $('#space');
-    height=canvas.height();
-    width=canvas.width();
-    x=width/2;
-    y=height/2;
-    canvas.drawRect({
-        fillStyle: '#000',
-        x: x, y: y,
-        width: 20,
-        height: 20
-      });
-  };
+  $(document).ready(showSquare);
 
-	$(document).keydown(function( event ){
-       canvas.clearCanvas();
-       if (event.keyCode==37 && x>10) x-=1;
-       if (event.keyCode==38 && y>10) y-=1;
-       if (event.keyCode==39 && x<width-10) x+=1
-       if (event.keyCode==40 && y<height-10) y+=1;
-      canvas.drawRect({
-			  fillStyle: '#000',
-			  x: x, y: y,
-			  width: 20,
-			  height: 20
-		  });
-	});
+  function showSquare() {
+    canvas = document.getElementById('space');
+    x = canvas.width / 2 - 10;
+    y = canvas.height / 2 - 10;
+    if (canvas.getContext) {
+      ctx = canvas.getContext('2d');
+      rectangle = new Path2D();
+      rectangle.rect(x, y, 20, 20);
+      ctx.fill(rectangle);
+    }
+
+    $(document).keydown(function(event) {
+
+      canvas = document.getElementById('space');
+      ctx = canvas.getContext('2d');
+      rectangle = new Path2D();
+
+      console.log(event.keyCode);
+
+      if (canvas.getContext) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (event.keyCode == 37 && x > 0) x -= 1;
+        if (event.keyCode == 38 && y > 0) y -= 1;
+        if (event.keyCode == 39 && x < canvas.width - 20) x += 1
+        if (event.keyCode == 40 && y < canvas.height - 20) y += 1;
+        //rectangle.moveTo(x,y);
+        rectangle.rect(x, y, 20, 20);
+        ctx.fill(rectangle);
+      }
+    });
+  };
 });

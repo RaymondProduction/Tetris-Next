@@ -4,7 +4,6 @@ requirejs.config({
 
   // Parametr for short id
   paths: {
-    'jquery': 'vendor/jquery-2.2.4.min',
-    'jcanvas' : 'vendor/jcanvas'
+    'jquery': 'vendor/jquery-2.2.4.min'
   }
 });
