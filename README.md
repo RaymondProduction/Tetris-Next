@@ -2,43 +2,47 @@
 
 http://tetris-next.net:8000/
 
-I created short instructions for install Karma and Jasmine
+##I created short instructions for install Karma and Jasmine
 
-# Local installation:
+### Local installation:
 npm install --save-dev jasmine
 
-# Global installation:
+### Global installation:
 npm install -g jasmine
 
-# Install Karma:
+### Install Karma:
 npm install karma --save-dev
 
-# Install plugins that your project needs:
+### Install plugins that your project needs:
 npm install karma-jasmine karma-chrome-launcher --save-dev
 
-#To initialize a project for Jasmine
+###To initialize a project for Jasmine
 jasmine init
 
-#You will need to do this if you want to run Karma on Windows from the command line.
+###You will need to do this if you want to run Karma on Windows from the command line.
 npm install -g karma-cli
 
 
 !!!I had problems with jasmine-core (Error: Cannot find module 'jasmine-core')!!!
 
-#Here is fix \/
+###Here is fix \/
 
 rm -rf node_modules
+---
 npm cache clean
+---
 npm i
-
+---
 sudo npm uninstall -g jasmine-core
+---
 sudo npm cache clean -f
+---
 sudo npm i -g jasmine-core
 
 
-#Configuration of karma
+###Configuration of karma
 karma init my.conf.js
 
-#Starting Karma
+###Starting Karma
 
 karma start my.conf.js
