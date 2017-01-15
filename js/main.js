@@ -1,6 +1,7 @@
 require(['jquery','canvas'], function() {
 
-  var x, y, canvas, rectangle, height, width;
+var x, y, canvas, rectangle, height, width;
+
 
   //showSquare();
   //window.onload = showSquare();
