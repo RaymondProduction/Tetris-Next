@@ -23,20 +23,20 @@ jasmine init
 npm install -g karma-cli
 
 
-!!!I had problems with jasmine-core (Error: Cannot find module 'jasmine-core')!!!
+####!!!I had problems with jasmine-core (Error: Cannot find module 'jasmine-core')!!!
 
-###Here is fix \/
+####Here the solution to the problem \/
 
 rm -rf node_modules
----
+
 npm cache clean
----
+
 npm i
----
+
 sudo npm uninstall -g jasmine-core
----
+
 sudo npm cache clean -f
----
+
 sudo npm i -g jasmine-core
 
 
