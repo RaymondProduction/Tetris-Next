@@ -22,8 +22,11 @@ describe('Test 2', function(){
     });
 
     it('funcTest 2', function() {
+
+      var newMod = require("module1");
+
       debugger;
 
-      expect(globModule1.add(7, 1)).toEqual(8);
+      expect(newMod.add(7, 1)).toEqual(8);
     }); 
 });
