@@ -1,13 +1,15 @@
-require(['jquery', 'canvas'], function() {
+require(['jquery' , 'canvas'], function(jQ) {
 
   var x, y, canvas, rectangle, height, width;
 
+  jQ.noConflict();
+
   //showSquare();
   //window.onload = showSquare();
-  //$(window).load(showSquare());
-  //$(document).ready(showSquare());
+  //jQ(window).load(showSquare());
+  //jQ(document).ready(showSquare());
 
-  $(document).ready(showSquare);
+  jQ(document).ready(showSquare);
 
   function showSquare() {
     canvas = document.getElementById('space');
@@ -20,7 +22,7 @@ require(['jquery', 'canvas'], function() {
       ctx.fill(rectangle);
     }
 
-    $(document).keydown(function(event) {
+    jQ(document).keydown(function(event) {
 
       canvas = document.getElementById('space');
       ctx = canvas.getContext('2d');

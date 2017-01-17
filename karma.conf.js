@@ -15,8 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/*.js', 'js/test.js'/*, 'js/main.js'*/
+      'js/vendor/require.js', 'js/module1.js', 'test/*.js'
     ],
+
+    // proxies: {
+    //   "js/module1.js": "http://localhost:9876/js/module1.js"
+    // },
 
 
     // list of files to exclude
