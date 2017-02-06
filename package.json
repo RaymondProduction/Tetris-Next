@@ -1,0 +1,25 @@
+{
+  "name": "teris-next",
+  "version": "1.0.0",
+  "description": "http://tetris-next.net:8000/",
+  "main": "karma.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaymondProduction/Tetris-Next.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RaymondProduction/Tetris-Next/issues"
+  },
+  "homepage": "https://github.com/RaymondProduction/Tetris-Next#readme",
+  "devDependencies": {
+    "socket.io": "^1.7.2"
+  }
+}
