@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 
 // оброботка события подключения, или отключения от сокета
 io.on('connection', function(socket){
-  console.log('a user connected' +(socket.id).toString().substr(0, 5));
+  console.log('a user connected');
    socket.on('disconnect', function(){
     console.log('user disconnected');
   });
