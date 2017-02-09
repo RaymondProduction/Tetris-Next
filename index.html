@@ -3,11 +3,17 @@
 <head>
   <title>Cube</title>
   <!-- Use require.js  -->
-  <script data-main="js/config.js" src="js/vendor/require.js"></script>
+  <script data-main="js/require.conf.js" src="js/vendor/require.js"></script>
+  <link href="css/chat.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
   <canvas id="space" width="100" height="150">
   </canvas>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
 </body>
 </html>
+

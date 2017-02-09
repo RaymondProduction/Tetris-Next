@@ -1,4 +1,4 @@
-require(['jquery' , 'canvas'], function(jQ) {
+require(['jquery' , 'canvas', 'chat'], function(jQ, canvas, chatModule) {
 
   var x, y, canvas, rectangle, height, width;
 
@@ -22,13 +22,15 @@ require(['jquery' , 'canvas'], function(jQ) {
       ctx.fill(rectangle);
     }
 
+    // активация чата
+    chat = new chatModule();
+    chat.start();
+
     jQ(document).keydown(function(event) {
 
       canvas = document.getElementById('space');
       ctx = canvas.getContext('2d');
       rectangle = new Path2D();
-
-      console.log(event.keyCode);
 
       if (canvas.getContext) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
