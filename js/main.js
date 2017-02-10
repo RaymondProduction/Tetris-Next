@@ -1,13 +1,11 @@
-require(['jquery' , 'canvas', 'chat'], function(jQ, canvas, chatModule) {
+require(['jquery', 'canvas', 'chat'], function(jQ, canvas, chatModule) {
 
-  var x, y, canvas, rectangle, height, width;
+  var x;
+  var y;
+  var canvas;
+  var rectangle;
 
   jQ.noConflict();
-
-  //showSquare();
-  //window.onload = showSquare();
-  //jQ(window).load(showSquare());
-  //jQ(document).ready(showSquare());
 
   jQ(document).ready(showSquare);
 
@@ -36,9 +34,8 @@ require(['jquery' , 'canvas', 'chat'], function(jQ, canvas, chatModule) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (event.keyCode == 37 && x > 0) x -= 1;
         if (event.keyCode == 38 && y > 0) y -= 1;
-        if (event.keyCode == 39 && x < canvas.width - 20) x += 1
+        if (event.keyCode == 39 && x < canvas.width - 20) x += 1;
         if (event.keyCode == 40 && y < canvas.height - 20) y += 1;
-        //rectangle.moveTo(x,y);
         rectangle.rect(x, y, 20, 20);
         ctx.fill(rectangle);
       }

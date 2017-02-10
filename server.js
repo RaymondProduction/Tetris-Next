@@ -42,7 +42,7 @@ var staticContent = {
 // Вывод в консоль уведомления о запуске сервера и ip веб сервера
 console.log('Start Web Server'.green.bold,' Local ip address is '.cyan,ip.address().cyan);
 
-app.use(function*(next) {
+app.use(function* (next) {
   yield next;
   var url = this.url;
   console.log('GET => '.magenta, url, '\tContent type: '.yellow, staticContent[path.extname(url)]);
