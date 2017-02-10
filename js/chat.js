@@ -19,7 +19,7 @@ define('chat', [
     jQ('form').submit(function() {
       if (self.name == '') {
         self.name = jQ('#m').val();
-        jQ('#messages').append(jQ('<li>').text('Ок. Your name in chat ' + self.name));
+        (jQ('<li>').text('Ок. Your name in chat ' + self.name)).prependTo(jQ('#messages'));
         self.socket.emit('chat message', self.name + ' joined the chat ');
         jQ('#m').val('');
       } else {
@@ -31,7 +31,7 @@ define('chat', [
 
     this.socket.on('chat message', function(msg) {
       if (this.name != '') {
-        jQ('#messages').append(jQ('<li>').text(msg));
+        (jQ('<li>').text(msg)).prependTo(jQ('#messages'));
       };
     });
 
