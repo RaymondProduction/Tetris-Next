@@ -4,12 +4,13 @@ form { background: #fff; padding: 1px; bottom: 0; width: 100%; }
 form input {
   border: solid 1px black;
   padding: 0px;
-  width: 39em;
+  width: 91%;
   height: 2em;
+  background: #bbf;
 }
 form button {
   display: inline-block;
-  width: 4em;
+  width: 9%;
   height: 2em;
   line-height: 2em;
   vertical-align: middle;
@@ -36,31 +37,23 @@ form button {
   border: solid 1px black;
   width: 48em;
   height: 50%;
-  background: #fff;
+  background: #ddd;
   position: absolute; /* Абсолютное позиционирование */
   bottom: 15px; /* Положение от нижнего края */
   right: 15px; /* Положение от правого края */
+  padding: 10px;
 }
 .hystory{
   overflow: auto ;/* Полосы прокрутки добавляются только при необходимости. */
-  width: 45em;
-  height: 23em;
+  width: 100%;
+  height: 90%;
   background: #fff;
   border: solid 1px black;
-  padding: 5px;
   right: 1em;
-  padding-right: 5px;
-  position: absolute; /* Абсолютное позиционирование */
-  bottom: 15px; /* Положение от нижнего края */
-    /* left: 50%;*/
+  left: 5em;
 }
 .send{
    top: 1em;
-   width: 45em;
-   padding: 0px;
-   padding-right: 0px;
-   position: absolute; /* Абсолютное позиционирование */
-   bottom: 15px; /* Положение от нижнего края */
-   left: 2em;
+   width: 100%;
    border: solid 0px black;
 }
