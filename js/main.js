@@ -1,13 +1,11 @@
-require(['jquery', 'canvas', 'chat'], function(jQ, canvas, chatModule) {
+require(['canvas', 'chat'], function(canvas, chatModule) {
 
   var x;
   var y;
   var canvas;
   var rectangle;
 
-  jQ.noConflict();
-
-  jQ(document).ready(showSquare);
+  document.addEventListener("DOMContentLoaded", showSquare());
 
   function showSquare() {
     canvas = document.getElementById('space');
@@ -20,12 +18,10 @@ require(['jquery', 'canvas', 'chat'], function(jQ, canvas, chatModule) {
       ctx.fill(rectangle);
     }
 
-    // активация чата
-    chat = new chatModule();
-    chat.start();
+    document.addEventListener("keydown", moveRect, false);
 
-    jQ(document).keydown(function(event) {
-
+    function moveRect(e) {
+      var keyCode = e.keyCode;
       canvas = document.getElementById('space');
       ctx = canvas.getContext('2d');
       rectangle = new Path2D();
@@ -39,6 +35,11 @@ require(['jquery', 'canvas', 'chat'], function(jQ, canvas, chatModule) {
         rectangle.rect(x, y, 20, 20);
         ctx.fill(rectangle);
       }
-    });
+
+    }
+    // активация чата
+    chat = new chatModule();
+    chat.start();
+
   };
 });

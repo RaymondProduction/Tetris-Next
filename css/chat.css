@@ -35,7 +35,7 @@ form button {
 #messages li:nth-child(odd) { background: #eee; }
 .chat{
   border: solid 1px black;
-  width: 48em;
+  width: 35em;
   height: 50%;
   background: #ddd;
   position: absolute; /* Абсолютное позиционирование */
@@ -49,11 +49,10 @@ form button {
   height: 90%;
   background: #fff;
   border: solid 1px black;
-  right: 1em;
-  left: 5em;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .send{
-   top: 1em;
    width: 100%;
    border: solid 0px black;
 }
