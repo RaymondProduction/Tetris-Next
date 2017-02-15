@@ -1,9 +1,4 @@
-require(['canvas', 'chat','cube'], function(canvas, chatModule,cubeModule) {
-
-  var x;
-  var y;
-  var canvas;
-  var rectangle;
+require(['chat','cube'], function(chatModule,cubeModule) {
 
   document.addEventListener("DOMContentLoaded", start());
 
