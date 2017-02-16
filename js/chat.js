@@ -5,6 +5,15 @@ define('chat', [
 
     // Module for organization chat
     function chatObj() {
+      // объект с данными
+     this.data = {
+        name : '',
+        massage : '',
+        list : [],
+        status : ''
+      }
+// JSON.stringify(a);
+
       this.input =  document.getElementById('m');
       // имя собеседника
       this.name = '';
@@ -46,10 +55,15 @@ define('chat', [
         if (self.name == '') {
           self.name = self.input.value;
           self.addMassage('Robot> Oк. Your name in chat ' + self.name);
-          self.socket.emit('chat message','Robot> '+ self.name + ' joined the chat ');
+          self.data.name = self.name;
+          self.data.status = 'joined the chat';
+          self.socket.emit('chat message',JSON.stringify(self.data));
           self.input.value = '';
         } else {
-          self.socket.emit('chat message', self.name + '> ' + self.input.value);
+          self.data.status = 'massage';
+          self.data.name = self.name;
+          self.data.massage = self.input.value;
+          self.socket.emit('chat message',JSON.stringify(self.data));
           self.input.value = '';
         }
         return false;
@@ -57,7 +71,15 @@ define('chat', [
 
       this.socket.on('chat message', function(msg) {
         if (this.name != '') {
-          self.addMassage(msg);
+          this.data = JSON.parse(msg);
+          var st;
+          if (this.data.status=='joined the chat') {
+            st = 'Robot> '+this.data.name+' joined the chat';
+          } else {
+            st =this.data.name+'> '+this.data.massage;
+          }
+
+          self.addMassage(st);
         };
       });
 

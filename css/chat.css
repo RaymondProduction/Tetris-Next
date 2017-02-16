@@ -45,14 +45,35 @@ form button {
 }
 .hystory{
   overflow: auto ;/* Полосы прокрутки добавляются только при необходимости. */
-  width: 100%;
+  width: 70%;
   height: 90%;
   background: #fff;
   border: solid 1px black;
   margin-top: 10px;
   margin-bottom: 10px;
+  float: left;
 }
 .send{
    width: 100%;
    border: solid 0px black;
+}
+.empty{
+  float: left;
+  width: 10px;
+  height: 10%;
+  background: #ddd  ;
+  border: 0;
+  padding-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.userList {
+  overflow: auto ;/* Полосы прокрутки добавляются только при необходимости. */
+  width: 30%-10px;
+  height: 90%;
+  background: #fff;
+  border: solid 1px black;
+  padding-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
