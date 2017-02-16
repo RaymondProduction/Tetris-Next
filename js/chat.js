@@ -6,15 +6,13 @@ define('chat', [
     // Module for organization chat
     function chatObj() {
       // объект с данными
-     this.data = {
-        name : '',
-        massage : '',
-        list : [],
-        status : ''
+      this.data = {
+        name: '',
+        massage: '',
+        list: [],
+        status: ''
       }
-// JSON.stringify(a);
-
-      this.input =  document.getElementById('m');
+      this.input = document.getElementById('m');
       // имя собеседника
       this.name = '';
       // подключаем сокет
@@ -25,6 +23,8 @@ define('chat', [
       this.message = document.createElement('li');
 
       // this.socket.io.connect('http://localhost');
+
+      this.socket.emit('someone connected', '');
     }
 
     chatObj.prototype.askName = function() {
@@ -47,6 +47,24 @@ define('chat', [
       // теперь это сообщение будет предыдущим
       this.message = message;
     }
+
+
+    chatObj.prototype.addUserList = function(u) {
+      var users = document.getElementById('users');
+
+      var nameUser = document.createTextNode(u);
+
+      user = document.createElement('li');
+
+      user.appendChild(nameUser);
+
+      users.insertBefore(user, this.user);
+
+      this.user = user;
+    }
+
+
+
     chatObj.prototype.start = function() {
       var self = this;
       this.askName();
@@ -57,29 +75,41 @@ define('chat', [
           self.addMassage('Robot> Oк. Your name in chat ' + self.name);
           self.data.name = self.name;
           self.data.status = 'joined the chat';
-          self.socket.emit('chat message',JSON.stringify(self.data));
+          self.socket.emit('chat message', JSON.stringify(self.data));
           self.input.value = '';
         } else {
           self.data.status = 'massage';
           self.data.name = self.name;
           self.data.massage = self.input.value;
-          self.socket.emit('chat message',JSON.stringify(self.data));
+          self.socket.emit('chat message', JSON.stringify(self.data));
           self.input.value = '';
         }
         return false;
       };
 
-      this.socket.on('chat message', function(msg) {
-        if (this.name != '') {
-          this.data = JSON.parse(msg);
-          var st;
-          if (this.data.status=='joined the chat') {
-            st = 'Robot> '+this.data.name+' joined the chat';
-          } else {
-            st =this.data.name+'> '+this.data.massage;
-          }
+      this.socket.on('someone connected', function(msg) {
+        self.data = JSON.parse(msg);
+        if (self.name == '') {
+          self.data.list.forEach(function(user) {
+            console.log(self.data);
+            self.addUserList(user);
+          });
+        }
+      });
 
+      this.socket.on('chat message', function(msg) {
+        self.data = JSON.parse(msg);
+        if (self.name != undefined) {
+          var st;
+          if (self.data.status == 'joined the chat') {
+            st = 'Robot> ' + self.data.name + ' joined the chat';
+            self.addUserList(self.data.list[self.data.list.length - 1]);
+          } else {
+            st = self.data.name + '> ' + self.data.massage;
+          }
           self.addMassage(st);
+        } else {
+
         };
       });
 

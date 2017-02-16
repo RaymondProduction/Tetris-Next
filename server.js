@@ -39,10 +39,22 @@ var staticContent = {
   '.png': 'image/png'
 };
 
-// Вывод в консоль уведомления о запуске сервера и ip веб сервера
-console.log('Start Web Server'.green.bold,' Local ip address is '.cyan,ip.address().cyan);
 
-app.use(function* (next) {
+// объект с данными
+var data = {
+  name: '',
+  massage: '',
+  list: [],
+  status: ''
+}
+
+var userList = [];
+
+
+// Вывод в консоль уведомления о запуске сервера и ip веб сервера
+console.log('Start Web Server'.green.bold, ' Local ip address is '.cyan, ip.address().cyan);
+
+app.use(function*(next) {
   yield next;
   var url = this.url;
   console.log('GET => '.magenta, url, '\tContent type: '.yellow, staticContent[path.extname(url)]);
@@ -56,7 +68,7 @@ app.use(function* (next) {
     str = buf;
   } else {
     console.log('Not found'.red);
-    str='Not found :(';
+    str = 'Not found :(';
   }
 
   this.body = str;
@@ -87,7 +99,26 @@ io.on('connection', function(socket) {
 // отправка методом emit входящих сообщений назад
 io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
-    io.emit('chat message', msg);
+      data = JSON.parse(msg);
+
+      if (data.status == 'joined the chat') {
+        userList.push(data.name);
+        //userList.sort();
+        data.list= userList.slice();
+        console.log(data.list)
+      }
+
+      // if (data.list.length!=userList.length) {
+      //   data.list= userList.slice();
+      // }
+
+      msg = JSON.stringify(data);
+      io.emit('chat message', msg);
+    });
+  socket.on('someone connected',function(msg){
+    data.list= userList.slice();
+    msg = JSON.stringify(data);
+    io.emit('someone connected',msg);
   });
 });
 
