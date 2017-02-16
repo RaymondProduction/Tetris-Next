@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Sat Jan 14 2017 19:02:47 GMT+0200 (EET)
+// Generated on Wed Feb 15 2017 11:00:27 GMT+0200 (EET)
 
 module.exports = function(config) {
   config.set({
@@ -10,17 +10,15 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'js/vendor/require.js', 'js/module1.js', 'test/*.js'
+      {pattern: 'js/*.js', included: false},
+      {pattern: 'test/**/*Spec.js', included: false},
+       'test/test-main.js'
     ],
-
-    // proxies: {
-    //   "js/module1.js": "http://localhost:9876/js/module1.js"
-    // },
 
 
     // list of files to exclude
@@ -31,9 +29,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-   /*   'js/main.js':['webpack'],
-      'test/*.js':['webpack']
-*/    },
+    },
 
 
     // test results reporter to use
