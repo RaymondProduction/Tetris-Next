@@ -94,32 +94,35 @@ io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('Socket=>'.blue, ' message: ' + msg);
   });
+
+    socket.on('joined the chat', function(msg) {
+    console.log('Socket=>'.blue, ' joined the chat');
+  });
 });
 
 // отправка методом emit входящих сообщений назад
 io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
-      data = JSON.parse(msg);
-
-      if (data.status == 'joined the chat') {
-        userList.push(data.name);
-        //userList.sort();
-        data.list= userList.slice();
-        console.log(data.list)
-      }
-
-      // if (data.list.length!=userList.length) {
-      //   data.list= userList.slice();
-      // }
-
-      msg = JSON.stringify(data);
-      io.emit('chat message', msg);
-    });
-  socket.on('someone connected',function(msg){
-    data.list= userList.slice();
+    data = JSON.parse(msg);
     msg = JSON.stringify(data);
-    io.emit('someone connected',msg);
+    io.emit('chat message', msg);
   });
+
+  socket.on('someone connected', function(msg) {
+    data.list = userList.slice();
+    msg = JSON.stringify(data);
+    io.emit('someone connected', msg);
+  });
+
+  socket.on('joined the chat', function(msg) {
+    data = JSON.parse(msg);
+    userList.push(data.name);
+    data.list = userList.slice();
+    msg = JSON.stringify(data);
+    io.emit('joined the chat', msg);
+  });
+
+
 });
 
 
