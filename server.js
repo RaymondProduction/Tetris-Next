@@ -134,8 +134,25 @@ io.on('connection', function(socket) {
     io.emit('joined the chat', msg);
   });
 
+  socket.on('you are online',function(msg){
+    console.log('=>',userList, msg);
+    var online = JSON.parse(msg);
+        console.log('on=>',online);
+    if (online.online==false) {
+      userList.splice(userList.indexOf(online.name), 1);
+      console.log('=>',userList);
+    }
+  });
+
 
 });
+
+
+  setInterval(function() {
+    userList.forEach(function(name){
+      io.emit('are you online',name);
+    });
+  }, 2000)
 
 
 
