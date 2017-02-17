@@ -48,6 +48,7 @@ var data = {
   status: ''
 }
 
+// список клиентов которы хранится на сервере
 var userList = [];
 
 
@@ -108,17 +109,28 @@ io.on('connection', function(socket) {
     io.emit('chat message', msg);
   });
 
+  // если подключился пока неизвестный пользователь
   socket.on('someone connected', function(msg) {
+    // скопируем список всех пользователей на сервере
     data.list = userList.slice();
+    // подготовим строку JSON
     msg = JSON.stringify(data);
+    // отправим ее клиенту
     io.emit('someone connected', msg);
   });
 
+  // зарегестрированый пользователь
   socket.on('joined the chat', function(msg) {
+    // покдлючаем данные в которых самая полезная информация
+    // это имя нового пользователя
     data = JSON.parse(msg);
+    // добавим с массив это имя
     userList.push(data.name);
+    // скопируем в данные весь список
     data.list = userList.slice();
+    // конвертируем в строку JSON
     msg = JSON.stringify(data);
+    // отправим клиенту
     io.emit('joined the chat', msg);
   });
 
