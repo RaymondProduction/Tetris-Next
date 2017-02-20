@@ -25,7 +25,7 @@ define('chat', [
       // this.socket.io.connect('http://localhost');
 
       // сообщить серверу что кто то подключается
-      this.socket.emit('someone connected', '');
+      this.socket.emit('connected', '');
     }
 
     chatObj.prototype.askName = function() {
@@ -49,20 +49,39 @@ define('chat', [
       this.message = message;
     }
 
+    // удалить юзера с списка юзеров
+    chatObj.prototype.deleteUserList = function(u){
+      // найдем по id элемент списка
+      var user = document.getElementById(u);
+      // получим список юзеров
+      var users =  document.getElementById('users');
+      // удалим элемент списка из списка юзеров
+      users.removeChild(user);
+    }
 
     chatObj.prototype.addUserList = function(u) {
-      // подготовим блок (div), пользователей
+      // подготовим список (ul), пользователей
       var users = document.getElementById('users');
       // добавим имя пользователя
       var nameUser = document.createTextNode(u);
       // подготовим елемент списка пользователей
       user = document.createElement('li');
+      user.id = u;
       // добавим имя пользователя в элемент списка
       user.appendChild(nameUser);
-      // вставляем элемент списка перед предыдущим
-      users.insertBefore(user, this.user);
-      // теперь этот элемент списка будет предыдущим
-      this.user = user;
+
+      // узнамем первый элемент списка,
+      // будем вместо него со здвигом вниз ставить
+      // записи о новых клиентах
+      var firstLi = users.getElementsByTagName('li')[0]
+      // если такого элемента не существует (не определен)
+      if (firstLi== undefined) {
+        // то тогда вставим новый иначе ...
+        users.appendChild(user);
+      } else {
+        // вставляем элемент списка перед предыдущим
+        users.insertBefore(user,firstLi);
+      };
     }
 
 
@@ -106,6 +125,7 @@ define('chat', [
 
       // если только что подключился ...
       this.socket.on('someone connected', function(msg) {
+        console.log(msg);
         self.data = JSON.parse(msg);
         //.. и у текущего юзера нет имени то ..
         if (self.name == '') {
@@ -143,18 +163,19 @@ define('chat', [
         }
       });
 
-      this.socket.on('are you online', function(n) {
-        var online = {
-          name: n,
-          online: false
-        }
-        if (n == self.name) {
-          online.online = true;
-        };
+      // если пришел запрос на проверку онлайн ли клиент
+      this.socket.on('are you online',function(name){
+        // узнаем речь ли идет про этого клиента
+         if (self.name == name) {
+          // ответить серверу что да, онлайн!
+           self.socket.emit('i am online', name);
+         }
+      });
 
-       console.log('n',n,'on',online)
-
-        self.socket.emit('you are online',  JSON.stringify(online));
+      // сервер сказал что пора удалить со списка
+      this.socket.on('the user leaves',function(name){
+        // данный юзер удаляется со списка
+        self.deleteUserList(name);
       });
 
     };
