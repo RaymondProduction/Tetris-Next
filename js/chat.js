@@ -12,6 +12,15 @@ define('chat', [
         list: [],
         status: ''
       }
+
+      // chatEl = document.createElement('div').className='chat';
+      // buttonCloseEl = document.createElement('button').
+      // buttonCloseEl.setAttribute('name', 'close');
+      // sendEl = document.createElement('div').className='send';
+      // formEl = document.createElement('form');
+
+
+
       this.input = document.getElementById('m');
       // имя собеседника
       this.name = '';
@@ -50,11 +59,11 @@ define('chat', [
     }
 
     // удалить юзера с списка юзеров
-    chatObj.prototype.deleteUserList = function(u){
+    chatObj.prototype.deleteUserList = function(u) {
       // найдем по id элемент списка
       var user = document.getElementById(u);
       // получим список юзеров
-      var users =  document.getElementById('users');
+      var users = document.getElementById('users');
       // удалим элемент списка из списка юзеров
       users.removeChild(user);
     }
@@ -74,13 +83,13 @@ define('chat', [
       // будем вместо него со здвигом вниз ставить
       // записи о новых клиентах
       var firstLi = users.getElementsByTagName('li')[0]
-      // если такого элемента не существует (не определен)
-      if (firstLi== undefined) {
+        // если такого элемента не существует (не определен)
+      if (firstLi == undefined) {
         // то тогда вставим новый иначе ...
         users.appendChild(user);
       } else {
         // вставляем элемент списка перед предыдущим
-        users.insertBefore(user,firstLi);
+        users.insertBefore(user, firstLi);
       };
     }
 
@@ -123,6 +132,26 @@ define('chat', [
         return false;
       };
 
+      var closeButton = document.getElementsByName("close")[0];
+      closeButton.addEventListener("click", function(event) {
+        // закрыть чат
+        chatDIV = document.getElementsByClassName('chat')[0];
+        chatDIV.className = 'hidden';
+
+        // отправим серверу что клиент покинул чат
+        self.socket.emit('the user leaves', name);
+
+        openButton = document.getElementsByName("open")[0];
+        openButton.className = 'open';
+        openButton.name = 'open';
+        openButton.addEventListener("click", function(event) {
+          chatDIV.className = 'chat';
+          openButton.className = 'hidden';
+        });
+      });
+
+
+
       // если только что подключился ...
       this.socket.on('someone connected', function(msg) {
         console.log(msg);
@@ -164,16 +193,16 @@ define('chat', [
       });
 
       // если пришел запрос на проверку онлайн ли клиент
-      this.socket.on('are you online',function(name){
+      this.socket.on('are you online', function(name) {
         // узнаем речь ли идет про этого клиента
-         if (self.name == name) {
+        if (self.name == name) {
           // ответить серверу что да, онлайн!
-           self.socket.emit('i am online', name);
-         }
+          self.socket.emit('i am online', name);
+        }
       });
 
       // сервер сказал что пора удалить со списка
-      this.socket.on('the user leaves',function(name){
+      this.socket.on('the user leaves', function(name) {
         // данный юзер удаляется со списка
         self.deleteUserList(name);
       });
