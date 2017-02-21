@@ -139,25 +139,50 @@ define('chat', [
         return false;
       };
 
+      // элемент кнопки для закрытия чата
       var closeButton = document.getElementsByName("close")[0];
+      // элемент кнопки для открытия
+      var openButton = document.getElementsByName("open")[0];
+      // элемент кнопки для вернуть
+      var minButton = document.getElementsByName("min")[0];
+      // слушатель на кнопку закрыть
       closeButton.addEventListener("click", function(event) {
         // закрыть чат
         chatDIV = document.getElementsByClassName('chat')[0];
+        // спрятать
         chatDIV.className = 'hidden';
-
         // отправим серверу что клиент покинул чат
-        self.socket.emit('the user leaves', name);
+        // главное чтоб он был зарегестрирован
+        if (self.name!='') {
+          self.socket.emit('the user leaves', self.name);
+        }
+        // легкий рестарт чата
+        self.reStart();
 
-        openButton = document.getElementsByName("open")[0];
+        // покажем кнопку "открыть чат"
         openButton.className = 'open';
-        openButton.name = 'open';
-        openButton.addEventListener("click", function(event) {
-          openButton.className = 'hidden';
-          chatDIV.className = 'chat';
-          self.reStart();
-        });
+        openButton.innerHTML='Open Chat';
       });
 
+      // слушатель на кнопку свернуть
+      minButton.addEventListener("click", function(event) {
+        //  чат
+        chatDIV = document.getElementsByClassName('chat')[0];
+        // спрятать
+        chatDIV.className = 'hidden';
+        // покажем кнопку "открыть чат"
+        openButton.className = 'open';
+        openButton.innerHTML = 'Show Chat';
+      });
+
+
+      // слушатель на кнопку открыть чат
+      openButton.addEventListener("click", function(event) {
+        // скрыть кнопку
+        openButton.className = 'hidden';
+        // показать чат
+        chatDIV.className = 'chat';
+      });
 
 
       // если только что подключился ...
@@ -211,6 +236,7 @@ define('chat', [
 
       // сервер сказал что пора удалить со списка
       this.socket.on('the user leaves', function(name) {
+        console.log(name);
         // данный юзер удаляется со списка
         self.deleteUserList(name);
       });

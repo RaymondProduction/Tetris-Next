@@ -27,10 +27,11 @@ form input {
 .close{
   width: 6%;
   height: 2em;
-  margin-left: 94%;
   margin-bottom: 10px;
 }
-
+.min{
+  margin-left: 87%;
+}
 form button {
   display: inline-block;
   width: 9%;

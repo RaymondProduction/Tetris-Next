@@ -143,6 +143,19 @@ io.on('connection', function(socket) {
   });
 
 
+  // от клиента пришло сообщение что он
+  // покинул чат
+  socket.on('the user leaves', function(name) {
+    // то удалим его из списка времени
+    delete userListTime[name];
+    // удалим со списка клиентов
+    userList.splice(userList.indexOf(name), 1);
+    // отправим запрос всем чтоб все удалили из списка его
+    io.emit('the user leaves', name);
+  });
+
+
+
   // если клиент (пользователь) отвечает что он
   // в сети продлим время пребывание на 6 тиков
   socket.on('i am online', function(n) {
