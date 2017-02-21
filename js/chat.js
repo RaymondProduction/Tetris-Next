@@ -13,23 +13,11 @@ define('chat', [
         status: ''
       }
 
-      // chatEl = document.createElement('div').className='chat';
-      // buttonCloseEl = document.createElement('button').
-      // buttonCloseEl.setAttribute('name', 'close');
-      // sendEl = document.createElement('div').className='send';
-      // formEl = document.createElement('form');
-
-
-
       this.input = document.getElementById('m');
       // имя собеседника
       this.name = '';
       // подключаем сокет
       this.socket = io();
-      // элемент со списком сообщений
-      this.messages = document.getElementById('messages');
-      // элемент списка, сообщение
-      this.message = document.createElement('li');
 
       // this.socket.io.connect('http://localhost');
 
@@ -40,22 +28,33 @@ define('chat', [
     chatObj.prototype.askName = function() {
       // текст сообщения
       var text = document.createTextNode('Robot> What is your  name?');
+      // элемент списка, сообщение
+      message = document.createElement('li');
       // добавить текст в элемент списка
-      this.message.appendChild(text);
+      message.appendChild(text);
       // добавить элемент списка в список сообщений
-      this.messages.appendChild(this.message);
+      messages.appendChild(message);
     }
     chatObj.prototype.addMassage = function(msg) {
+      // элемент со списком сообщений
+      var messages = document.getElementById('messages');
+
       // создаем текст сообщения
       var text = document.createTextNode(msg);
       // создаем сообщение, елемент списка
       message = document.createElement('li');
       // добавляем текст в сообщение
       message.appendChild(text);
-      // вставляем сообщение перед предыдущим this.message
-      messages.insertBefore(message, this.message);
-      // теперь это сообщение будет предыдущим
-      this.message = message;
+
+      var firstLi = messages.getElementsByTagName('li')[0];
+      // если такого элемента не существует (не определен)
+      if (firstLi == undefined) {
+        // то тогда вставим новый иначе ...
+        messages.appendChild(message);
+      } else {
+        // вставляем элемент списка перед предыдущим
+        messages.insertBefore(message, firstLi);
+      };
     }
 
     // удалить юзера с списка юзеров
@@ -93,6 +92,14 @@ define('chat', [
       };
     }
 
+
+    chatObj.prototype.reStart = function() {
+      this.name = '';
+      // элемент со списком сообщений
+      var massages = document.getElementById('messages');
+      massages.innerHTML = '';
+      this.askName();
+    };
 
     // старт чата
     chatObj.prototype.start = function() {
@@ -145,8 +152,9 @@ define('chat', [
         openButton.className = 'open';
         openButton.name = 'open';
         openButton.addEventListener("click", function(event) {
-          chatDIV.className = 'chat';
           openButton.className = 'hidden';
+          chatDIV.className = 'chat';
+          self.reStart();
         });
       });
 

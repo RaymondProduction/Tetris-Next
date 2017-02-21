@@ -64,6 +64,7 @@ form button {
 
 
 .chat{
+  border-radius: 6px;
   border: solid 1px black;
   width: 35em;
   height: 50%;
