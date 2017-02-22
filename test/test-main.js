@@ -14,7 +14,8 @@ requirejs.config({
         'chat':'../js/chat',
         'cube':'../js/cube',
         'canvas': '../bower_components/canvas-5-polyfill/canvas',
-     //   'socketio': '../socket.io/socket.io'
+        // создан фективный модуль soketio для тестирования
+        'socketio': '../js/socketioForTest'
         //'canvas':'../bower_components/canvas-5-polyfill/canvas'
     },
 
