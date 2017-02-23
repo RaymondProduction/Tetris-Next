@@ -6,7 +6,7 @@ requirejs.config({
   paths: {
     'jquery': 'vendor/jquery-2.2.4.min',
     'canvas': '../bower_components/canvas-5-polyfill/canvas',
-   'socketio': '../socket.io/socket.io'
-   //'socket': 'socketioForTest'
+  // 'socketio': '../socket.io/socket.io'
+   'socket': 'socketioForTest'
   }
 });
