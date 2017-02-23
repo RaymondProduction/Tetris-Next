@@ -8,6 +8,6 @@
         "no-console": "off",
 	      "padded-blocks":"off",
         "require-jsdoc": "off",
-        "no-var":  0
+        "no-var":0
     }
 }

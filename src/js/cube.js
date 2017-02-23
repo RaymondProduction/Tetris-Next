@@ -36,7 +36,7 @@ define('cube', [],
           self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
           self.ctx.fillRect(self.x, self.y, 20, 20);
         };
-      })
+      });
     }
 
     return cubeObj;
