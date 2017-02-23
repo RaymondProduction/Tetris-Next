@@ -2,7 +2,10 @@ define('socketio', function(){
     var socketObj = {};
 
     function socketObjFunc() {
-      this.massage = '{"name":"","massage":"","list":[],"status":""}';
+      this.message = '{"name":"","massage":"","list":[],"status":""}';
+      this.message.appendChild = function () {
+
+      };
       return socketObj;
     };
 
