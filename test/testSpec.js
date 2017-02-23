@@ -46,7 +46,6 @@ define(['cube', 'chat', 'socketio'],
 
     describe('Test for chat module', function() {
       beforeEach(function() {
-        socketion
         spyOn(document, 'getElementById').and.callFake(function(id) {
           return {
             width: 100,
@@ -54,11 +53,15 @@ define(['cube', 'chat', 'socketio'],
           }
         });
 
+        var socketio  = socketioModule();
+
+        spyOn(socketio,'emit');
+
       });
       it('test init chat', function() {
-        io = function() {
-          return {};
-        }
+        var chat = new chatModule();
+        chat.start();
+        expect(socketio.emit).toHaveBeenCalled();
       });
 
     });
