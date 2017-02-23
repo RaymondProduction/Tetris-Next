@@ -1,6 +1,5 @@
-define('chat', [
-    'socketio'
-  ],
+define('chat',
+  ['socketio'],
   function(io) {
 
     // Module for organization chat
@@ -10,8 +9,8 @@ define('chat', [
         name: '',
         massage: '',
         list: [],
-        status: ''
-      }
+        status: '',
+      };
 
       this.input = document.getElementById('m');
       // имя собеседника
@@ -23,81 +22,95 @@ define('chat', [
 
       // сообщить серверу что кто то подключается
       this.socket.emit('connected', '');
+
+      this.text = null;
+      this.massages = null;
+      this.message=null;
+      this.firstLi=null;
+      this.user=null;
+      this.users=null;
+      this.nameUser=null;
+      this.closeButton=null;
+      this.openButton=null;
+      this.minButton=null;
+
     }
 
     chatObj.prototype.askName = function() {
       // текст сообщения
-      var text = document.createTextNode('Robot> What is your  name?');
+      this.text = document.createTextNode('Robot> What is your  name?');
+      this.messages = document.getElementById('messages');
       // элемент списка, сообщение
-      message = document.createElement('li');
+      this.message = document.createElement('li');
       // добавить текст в элемент списка
-      message.appendChild(text);
+      this.message.appendChild(this.text);
       // добавить элемент списка в список сообщений
-      messages.appendChild(message);
-    }
+      this.messages.appendChild(this.message);
+    };
+
     chatObj.prototype.addMassage = function(msg) {
       // элемент со списком сообщений
-      var messages = document.getElementById('messages');
+      this.messages = document.getElementById('messages');
 
       // создаем текст сообщения
-      var text = document.createTextNode(msg);
+      this.text = document.createTextNode(msg);
       // создаем сообщение, елемент списка
-      message = document.createElement('li');
+      this.message = document.createElement('li');
       // добавляем текст в сообщение
-      message.appendChild(text);
+      this.message.appendChild(this.text);
 
-      var firstLi = messages.getElementsByTagName('li')[0];
+      this.firstLi = messages.getElementsByTagName('li')[0];
       // если такого элемента не существует (не определен)
-      if (firstLi == undefined) {
+      if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
-        messages.appendChild(message);
+        this.messages.appendChild(message);
       } else {
         // вставляем элемент списка перед предыдущим
-        messages.insertBefore(message, firstLi);
+        this.messages.insertBefore(this.message, this.firstLi);
       };
-    }
+    };
 
     // удалить юзера с списка юзеров
     chatObj.prototype.deleteUserList = function(u) {
       // найдем по id элемент списка
-      var user = document.getElementById(u);
+      this.user = document.getElementById(u);
       // получим список юзеров
-      var users = document.getElementById('users');
+      this.users = document.getElementById('users');
       // удалим элемент списка из списка юзеров
       users.removeChild(user);
-    }
+    };
 
     chatObj.prototype.addUserList = function(u) {
       // подготовим список (ul), пользователей
-      var users = document.getElementById('users');
+      this.users = document.getElementById('users');
       // добавим имя пользователя
-      var nameUser = document.createTextNode(u);
+      this.nameUser = document.createTextNode(u);
       // подготовим елемент списка пользователей
-      user = document.createElement('li');
-      user.id = u;
+      this.user = document.createElement('li');
+      this.user.id = u;
       // добавим имя пользователя в элемент списка
-      user.appendChild(nameUser);
+      this.user.appendChild(this.nameUser);
 
       // узнамем первый элемент списка,
       // будем вместо него со здвигом вниз ставить
       // записи о новых клиентах
-      var firstLi = users.getElementsByTagName('li')[0]
+      this.firstLi = users.getElementsByTagName('li')[0];
         // если такого элемента не существует (не определен)
-      if (firstLi == undefined) {
+      if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
-        users.appendChild(user);
+        this.users.appendChild(this.user);
       } else {
         // вставляем элемент списка перед предыдущим
-        users.insertBefore(user, firstLi);
+        this.users.insertBefore(this.user, this.firstLi);
       };
-    }
+    };
 
 
     chatObj.prototype.reStart = function() {
       this.name = '';
       // элемент со списком сообщений
-      var massages = document.getElementById('messages');
-      massages.innerHTML = '';
+      this.massages = document.getElementById('messages');
+      this.massages.innerHTML = '';
       this.askName();
     };
 
@@ -140,13 +153,13 @@ define('chat', [
       };
 
       // элемент кнопки для закрытия чата
-      var closeButton = document.getElementsByName("close")[0];
+      this.closeButton = document.getElementsByName('close')[0];
       // элемент кнопки для открытия
-      var openButton = document.getElementsByName("open")[0];
+      this.openButton = document.getElementsByName('open')[0];
       // элемент кнопки для вернуть
-      var minButton = document.getElementsByName("min")[0];
+      this.minButton = document.getElementsByName('min')[0];
       // слушатель на кнопку закрыть
-      closeButton.addEventListener("click", function(event) {
+      this.closeButton.addEventListener('click', function(event) {
         // закрыть чат
         chatDIV = document.getElementsByClassName('chat')[0];
         // спрятать
@@ -160,26 +173,26 @@ define('chat', [
         self.reStart();
 
         // покажем кнопку "открыть чат"
-        openButton.className = 'open';
-        openButton.innerHTML='Open Chat';
+        this.openButton.className = 'open';
+        this.openButton.innerHTML='Open Chat';
       });
 
       // слушатель на кнопку свернуть
-      minButton.addEventListener("click", function(event) {
+      minButton.addEventListener('click', function(event) {
         //  чат
         chatDIV = document.getElementsByClassName('chat')[0];
         // спрятать
         chatDIV.className = 'hidden';
         // покажем кнопку "открыть чат"
-        openButton.className = 'open';
-        openButton.innerHTML = 'Show Chat';
+        this.openButton.className = 'open';
+        this.openButton.innerHTML = 'Show Chat';
       });
 
 
       // слушатель на кнопку открыть чат
-      openButton.addEventListener("click", function(event) {
+      this.openButton.addEventListener('click', function(event) {
         // скрыть кнопку
-        openButton.className = 'hidden';
+        this.openButton.className = 'hidden';
         // показать чат
         chatDIV.className = 'chat';
       });
@@ -189,7 +202,7 @@ define('chat', [
       this.socket.on('someone connected', function(msg) {
         console.log(msg);
         self.data = JSON.parse(msg);
-        //.. и у текущего юзера нет имени то ..
+        // и у текущего юзера нет имени то ..
         if (self.name == '') {
           // покажем ему список всех клиентов
           self.data.list.forEach(function(user) {
@@ -214,7 +227,7 @@ define('chat', [
 
       // оброботка пришедших сообщений
       this.socket.on('chat message', function(msg) {
-        //если имя известно то ...
+        // если имя известно то ...
         if (self.name != '') {
           // переведем строку JSON в объект данных
           self.data = JSON.parse(msg);

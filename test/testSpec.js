@@ -53,12 +53,17 @@ define(['cube', 'chat', 'socketio'],
           }
         });
 
-        var socketio  = socketioModule();
 
-        spyOn(socketio,'emit');
+
+
 
       });
+
+
       it('test init chat', function() {
+        debugger;
+       var socketio =  socketioModule();
+        spyOn(socketio,'emit');
         var chat = new chatModule();
         chat.start();
         expect(socketio.emit).toHaveBeenCalled();

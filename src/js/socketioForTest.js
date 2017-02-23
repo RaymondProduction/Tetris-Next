@@ -1,20 +1,23 @@
-define('socketioTest', function(){
-    function socketObj() {
-      this.massage = 'test';
+define('socketio', function(){
+    var socketObj = {};
+
+    function socketObjFunc() {
+      this.massage = '{"name":"","massage":"","list":[],"status":""}';
+      return socketObj;
     };
 
-    socketObj.prototype.setMassage = function(msg) {
+    socketObj.setMassage = function(msg) {
       this.massage = msg;
     };
 
-    socketObj.prototype.emit = function(a, b) {
+    socketObj.emit = function(a, b) {
       console.log('emit:', a, b);
     };
 
-    socketObj.prototype.on = function(a, callback) {
+    socketObj.on = function(a, callback) {
       callback(this.massage);
     };
 
-    return socketObj;
+    return socketObjFunc;
 
   });
