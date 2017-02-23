@@ -48,25 +48,25 @@ define(['cube', 'chat', 'socketio'],
       beforeEach(function() {
         spyOn(document, 'getElementById').and.callFake(function(id) {
           return {
+            appendChild : function (a) {
+              console.log(a);
+            },
             width: 100,
             height: 150
           }
         });
 
 
-
-
-
       });
 
 
       it('test init chat', function() {
-    /*    debugger;
+    //   debugger;
        var socketio =  socketioModule();
         spyOn(socketio,'emit');
         var chat = new chatModule();
         chat.start();
-        expect(socketio.emit).toHaveBeenCalled();*/
+        expect(socketio.emit).toHaveBeenCalled();
       });
 
     });

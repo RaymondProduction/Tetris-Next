@@ -3,9 +3,7 @@ define('socketio', function(){
 
     function socketObjFunc() {
       this.message = '{"name":"","massage":"","list":[],"status":""}';
-      this.message.appendChild = function () {
 
-      };
       return socketObj;
     };
 
