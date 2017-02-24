@@ -31,16 +31,6 @@ define(['cube', 'chat', 'socketio'],
         cube = new cubeModule();
         expect(document.addEventListener).toHaveBeenCalled();
       });
-
-      /*
-          it('test for clearRect', function() {
-            var cube;
-            spyOn(cubeModule.prototype.ctx, 'fillRect');
-            var cube = new cubeModule();
-            expect(cubeModule.prototype.ctx.fillRect.calls.argsFor(0)).toEqual([cube.x, cube.y, 20, 20]);
-
-          });
-      */
     });
 
 
@@ -52,6 +42,7 @@ define(['cube', 'chat', 'socketio'],
 
         chat = new chatModule();
 
+        // делаем фейковые функции для DOM
         spyOn(document, 'getElementById').and.callFake(function(id) {
           return {
             appendChild: function(a) {
@@ -103,9 +94,6 @@ define(['cube', 'chat', 'socketio'],
           }
           return obj;
         });
-
-
-
       });
 
 
@@ -131,16 +119,60 @@ define(['cube', 'chat', 'socketio'],
       });
 
       it('test addMassage', function() {
-
         spyOn(document, 'createTextNode');
         chat.addMassage();
         expect(document.getElementById).toHaveBeenCalledWith(
           'messages'
         );
         expect(document.createTextNode).toHaveBeenCalled();
+      });
+
+      it('test deleteUserList', function() {
+        chat.deleteUserList('test');
+        expect(document.getElementById.calls.argsFor(0)).toEqual(
+          ['test']
+        );
+        expect(document.getElementById.calls.argsFor(1)).toEqual(
+          ['users']
+        );
 
       });
 
+      it('test addUserList', function() {
+        chat.addUserList('test');
+        expect(document.getElementById).toHaveBeenCalledWith(
+          'users'
+        );
+        expect(document.createTextNode);
+        expect(document.createElement).toHaveBeenCalledWith('li');
+      });
+
+      it('test reStart', function() {
+        chat.reStart();
+        expect(document.getElementById).toHaveBeenCalled();
+      });
+
+      it('test start', function() {
+        var socketio = socketioModule();
+        spyOn(socketio,'on');
+        spyOn(socketio,'emit');
+        chat.start();
+        expect(document.getElementsByName.calls.argsFor(0)).toEqual(
+          ['close']
+        );
+        expect(document.getElementsByName.calls.argsFor(1)).toEqual(
+          ['open']
+        );
+        expect(document.getElementsByName.calls.argsFor(2)).toEqual(
+          ['min']
+        );
+        // 5 раз был вызов метода on модуля socket
+        expect(socketio.on.calls.count()).toBe(5);
+        //вызов происходит изнутри socket.on
+        //expect(socketio.emit.calls.count()).toBe(5);
+        // вызов происохдит внутри addEventListener, не работает
+        //expect(document.getElementsByClassName).toHaveBeenCalled();
+      });
     });
 
   });
