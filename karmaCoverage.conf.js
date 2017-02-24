@@ -10,7 +10,7 @@ module.exports = function(config) {
     },
 
    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
@@ -20,9 +20,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'js/*.js', included: false},
-      {pattern: 'test/**/*Spec.js', included: false},
-       'test/test-main.js'
+      {pattern: './src/js/*.js', included: false},
+      {pattern: './test/socketioForTest.js', included: false},
+      {pattern: './test/**/*Spec.js', included: false},
+      './test/test-main.js'
     ],
 
 
@@ -67,6 +68,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    //browsers: ['Firefox'],
     //browsers: ['Chrome'],
     browsers: ['PhantomJS'],
 
