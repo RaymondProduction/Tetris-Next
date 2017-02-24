@@ -48,22 +48,72 @@ define(['cube', 'chat', 'socketio'],
       beforeEach(function() {
         spyOn(document, 'getElementById').and.callFake(function(id) {
           return {
-            appendChild : function (a) {
+            appendChild: function(a) {
               console.log(a);
+            },
+
+            getElementsByTagName: function() {
+              return [{}];
+            },
+            removeChild: function() {
+              return {};
+            },
+            insertBefore: function() {
+              return {};
+            }
+          }
+        });
+
+        spyOn(document, 'getElementsByName').and.callFake(function(id) {
+          var obj = {
+            appendChild: function(a) {
+              console.log(a);
+            },
+            addEventListener: function(a, callback) {
+
             },
             width: 100,
             height: 150
           }
+          return [obj];
         });
+
+        spyOn(document, 'getElementsByClassName').and.callFake(function(id) {
+          var obj = {
+            appendChild: function(a) {
+              console.log(a);
+            },
+            addEventListener: function(a, callback) {
+
+            },
+            width: 100,
+            height: 150
+          }
+          return [obj];
+        });
+
+        spyOn(document, 'createElement').and.callFake(function(id) {
+          var obj = {
+            appendChild: function(a) {
+              console.log(a);
+            },
+            addEventListener: function(a, callback) {},
+            getElementsByTagName: function() {
+              return [{}];
+            }
+          }
+          return obj;
+        });
+
 
 
       });
 
 
       it('test init chat', function() {
-    //   debugger;
-       var socketio =  socketioModule();
-        spyOn(socketio,'emit');
+        //   debugger;
+        var socketio = socketioModule();
+        spyOn(socketio, 'emit');
         var chat = new chatModule();
         chat.start();
         expect(socketio.emit).toHaveBeenCalled();

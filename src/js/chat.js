@@ -59,7 +59,7 @@ define('chat',
       // добавляем текст в сообщение
       this.message.appendChild(this.text);
 
-      this.firstLi = messages.getElementsByTagName('li')[0];
+      this.firstLi = this.messages.getElementsByTagName('li')[0];
       // если такого элемента не существует (не определен)
       if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
@@ -77,7 +77,7 @@ define('chat',
       // получим список юзеров
       this.users = document.getElementById('users');
       // удалим элемент списка из списка юзеров
-      users.removeChild(user);
+      this.users.removeChild(this.user);
     };
 
     chatObj.prototype.addUserList = function(u) {
@@ -94,7 +94,7 @@ define('chat',
       // узнамем первый элемент списка,
       // будем вместо него со здвигом вниз ставить
       // записи о новых клиентах
-      this.firstLi = users.getElementsByTagName('li')[0];
+      this.firstLi = this.users.getElementsByTagName('li')[0];
         // если такого элемента не существует (не определен)
       if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
@@ -178,7 +178,7 @@ define('chat',
       });
 
       // слушатель на кнопку свернуть
-      minButton.addEventListener('click', function(event) {
+      this.minButton.addEventListener('click', function(event) {
         //  чат
         chatDIV = document.getElementsByClassName('chat')[0];
         // спрятать
