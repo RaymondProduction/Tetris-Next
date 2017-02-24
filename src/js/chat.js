@@ -173,8 +173,8 @@ define('chat',
         self.reStart();
 
         // покажем кнопку "открыть чат"
-        this.openButton.className = 'open';
-        this.openButton.innerHTML='Open Chat';
+        self.openButton.className = 'open';
+        self.openButton.innerHTML='Open Chat';
       });
 
       // слушатель на кнопку свернуть
@@ -184,15 +184,15 @@ define('chat',
         // спрятать
         chatDIV.className = 'hidden';
         // покажем кнопку "открыть чат"
-        this.openButton.className = 'open';
-        this.openButton.innerHTML = 'Show Chat';
+        self.openButton.className = 'open';
+        self.openButton.innerHTML = 'Show Chat';
       });
 
 
       // слушатель на кнопку открыть чат
       this.openButton.addEventListener('click', function(event) {
         // скрыть кнопку
-        this.openButton.className = 'hidden';
+        self.openButton.className = 'hidden';
         // показать чат
         chatDIV.className = 'chat';
       });

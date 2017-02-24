@@ -7,7 +7,8 @@ require(['chat','cube'], function(chatModule,cubeModule) {
     chat = new chatModule();
     chat.start();
     // создаем куб
-    cube = new cubeModule();
+    cube = new cubeModule(20);
+    cube.start();
   };
 
 });
