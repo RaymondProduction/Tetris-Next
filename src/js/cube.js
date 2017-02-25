@@ -26,9 +26,9 @@ define('cube', ['socketio'],
       this.size = size;
 
       var dataOfcube = {
-        x: self.x,
-        y: self.y,
-        color: self.color
+        x: this.x,
+        y: this.y,
+        color: this.color
       }
 
       this.socket.emit('create cube', JSON.stringify(dataOfcube));
@@ -53,19 +53,6 @@ define('cube', ['socketio'],
 
           self.socket.emit('move cube', JSON.stringify(dataOfcube));
         }
-        // if (self.canvas.getContext) {
-        //   if (keyCode == 37 && self.x > 0) {
-        //     self.x -= 1;
-        //   }
-        //   if (keyCode == 38 && self.y > 0) {
-        //     self.y -= 1;
-        //   }
-        //   if (keyCode == 39 && self.x < self.numberOfCellsInWidth - 1) {
-        //     self.x += 1;
-        //   }
-        //   if (keyCode == 40 && self.y < self.numberOfCellsInHeight - 1) {
-        //     self.y += 1;
-        //   }
 
       });
 
@@ -76,15 +63,16 @@ define('cube', ['socketio'],
           self.y = c.y;
         };
 
-        self.ctx.fillStyle = 'white';
-        self.ctx.fillRect(
-          c.ex * self.size,
-          c.ey * self.size,
-          self.size,
-          self.size
-        );
+        if (c.ex != undefined && c.ey != undefined) {
+          self.ctx.fillStyle = 'white';
+          self.ctx.fillRect(
+            c.ex * self.size,
+            c.ey * self.size,
+            self.size,
+            self.size
+          );
+        }
 
-        // self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
         self.ctx.fillStyle = c.color;
         self.ctx.fillRect(
           c.x * self.size,
