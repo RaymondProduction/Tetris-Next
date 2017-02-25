@@ -24,6 +24,14 @@ define('cube', ['socketio'],
       }
       this.socket = io();
       this.size = size;
+
+      var dataOfcube = {
+        x: self.x,
+        y: self.y,
+        color: self.color
+      }
+
+      this.socket.emit('create cube', JSON.stringify(dataOfcube));
     }
 
 
@@ -31,29 +39,63 @@ define('cube', ['socketio'],
       var self = this;
       document.addEventListener('keydown', function(event) {
         var keyCode = event.keyCode;
-        if (self.canvas.getContext) {
-          if (keyCode == 37 && self.x > 0) {
-            self.x -= 1;
-          }
-          if (keyCode == 38 && self.y > 0) {
-            self.y -= 1;
-          }
-          if (keyCode == 39 && self.x < self.numberOfCellsInWidth - 1) {
-            self.x += 1;
-          }
-          if (keyCode == 40 && self.y < self.numberOfCellsInHeight - 1) {
-            self.y += 1;
+        if (keyCode == 37 ||
+          keyCode == 38 ||
+          keyCode == 39 ||
+          keyCode == 40
+        ) {
+          var dataOfcube = {
+            k: keyCode,
+            x: self.x,
+            y: self.y,
+            color: self.color
           }
 
-          self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-          self.ctx.fillRect(
-            self.x * self.size,
-            self.y * self.size,
-            self.size,
-            self.size
-          );
-        };
+          self.socket.emit('move cube', JSON.stringify(dataOfcube));
+        }
+        // if (self.canvas.getContext) {
+        //   if (keyCode == 37 && self.x > 0) {
+        //     self.x -= 1;
+        //   }
+        //   if (keyCode == 38 && self.y > 0) {
+        //     self.y -= 1;
+        //   }
+        //   if (keyCode == 39 && self.x < self.numberOfCellsInWidth - 1) {
+        //     self.x += 1;
+        //   }
+        //   if (keyCode == 40 && self.y < self.numberOfCellsInHeight - 1) {
+        //     self.y += 1;
+        //   }
+
       });
+
+      this.socket.on('server move', function(dataOfcube) {
+        c = JSON.parse(dataOfcube);
+        if (c.color == self.color) {
+          self.x = c.x;
+          self.y = c.y;
+        };
+
+        self.ctx.fillStyle = 'white';
+        self.ctx.fillRect(
+          c.ex * self.size,
+          c.ey * self.size,
+          self.size,
+          self.size
+        );
+
+        // self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+        self.ctx.fillStyle = c.color;
+        self.ctx.fillRect(
+          c.x * self.size,
+          c.y * self.size,
+          self.size,
+          self.size
+        );
+
+      })
+
+
     }
 
     return cubeObj;
