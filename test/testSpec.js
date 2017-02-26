@@ -1,6 +1,6 @@
 define(['cube', 'chat', 'socketio'],
   function(cubeModule, chatModule, socketioModule) {
-
+/*
     describe('Test for cube module', function() {
       beforeEach(function() {
         spyOn(document, 'getElementById').and.callFake(function(id) {
@@ -33,7 +33,7 @@ define(['cube', 'chat', 'socketio'],
       });
     });
 
-
+*/
     describe('Test for chat module', function() {
 
       var chat;

@@ -16,7 +16,6 @@ requirejs.config({
         'canvas': './bower_components/canvas-5-polyfill/canvas',
         // создан фективный модуль soketio для тестирования
         'socketio': './test/socketioForTest'
-        //'canvas':'../bower_components/canvas-5-polyfill/canvas'
     },
 
     // ask Require.js to load these files (all our tests)

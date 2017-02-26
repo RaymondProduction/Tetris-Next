@@ -6,7 +6,5 @@ requirejs.config({
   paths: {
     'canvas': '../bower_components/canvas-5-polyfill/canvas',
    'socketio': '../socket.io/socket.io'
-   // фейк для тестирования
-   //'socketio': '/test/socketioForTest'
   }
 });
