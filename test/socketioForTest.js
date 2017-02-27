@@ -1,5 +1,6 @@
 define('socketio', function(){
     var socketObj = {};
+    socketObj.event = {};
 
     function socketObjFunc() {
       return socketObj;
@@ -11,9 +12,15 @@ define('socketio', function(){
     socketObj.emit = function() {
     };
 
-    socketObj.on = function(a, callback) {
-      callback('{"name":"","massage":"","list":[],"status":""}');
+    socketObj.on = function(eventName, callback) {
+      // строка для триггера
+      socketObj.event[eventName]=callback;
+      //callback('{"name":"","massage":"","list":[],"status":""}');
     };
+    socketObj.trigger = function(eventName,param){
+      // триггер
+      socketObj.event[eventName](param);
+    }
 
     return socketObjFunc;
 
