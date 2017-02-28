@@ -3,6 +3,8 @@ define('cube', ['socketio'],
 
     function cubeObj(size) {
 
+      this.size = size;
+
       this.canvas = document.getElementById('space');
 
       this.numberOfCellsInWidth = Math.floor((this.canvas.width / size));
@@ -19,11 +21,9 @@ define('cube', ['socketio'],
 
       if (this.canvas.getContext) {
         this.ctx = this.canvas.getContext('2d');
-        this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.x * size, this.y * size, size, size);
+        this.draw();
       }
       this.socket = io();
-      this.size = size;
 
       var dataOfcube = {
         x: this.x,
@@ -34,7 +34,38 @@ define('cube', ['socketio'],
       this.socket.emit('create cube', JSON.stringify(dataOfcube));
     }
 
-
+    cubeObj.prototype.draw = function() {
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillRect(
+        this.x * this.size,
+        this.y * this.size,
+        this.size,
+        this.size
+      );
+      this.ctx.strokeStyle = 'black';
+      this.ctx.strokeRect(
+        this.x * this.size + 1,
+        this.y * this.size + 1,
+        this.size - 2,
+        this.size - 2
+      );
+    };
+    cubeObj.prototype.otherDarw = function(c) {
+      this.ctx.fillStyle = c.color;
+      this.ctx.fillRect(
+        c.x * this.size,
+        c.y * this.size,
+        this.size,
+        this.size
+      );
+      this.ctx.strokeStyle = 'black';
+      this.ctx.strokeRect(
+        c.x * this.size + 1,
+        c.y * this.size + 1,
+        this.size - 2,
+        this.size - 2
+      );
+    }
     cubeObj.prototype.start = function() {
       var self = this;
       document.addEventListener('keydown', function(event) {
@@ -73,13 +104,8 @@ define('cube', ['socketio'],
           );
         }
 
-        self.ctx.fillStyle = c.color;
-        self.ctx.fillRect(
-          c.x * self.size,
-          c.y * self.size,
-          self.size,
-          self.size
-        );
+        self.otherDarw(c);
+
 
       })
 
