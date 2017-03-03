@@ -5,8 +5,8 @@ require(['chat', 'cube', 'session'],
 
     function start() {
       // // активация чата
-      // chat = new chatModule();
-      // chat.start();
+       chat = new chatModule();
+       chat.start();
       // // создаем куб
       // cube = new cubeModule(20);
       // cube.start();
@@ -14,7 +14,7 @@ require(['chat', 'cube', 'session'],
 
       // Experiment for session
 
-      session = new sessionModule(['chat', 'cube']);
+ /*     session = new sessionModule(['chat', 'cube']);
 
       session.authorize('Petro', function(data) {
         console.log(data);
@@ -40,13 +40,13 @@ require(['chat', 'cube', 'session'],
         console.log('Data =>', data);
       });
 
-      setTimeout(function() {
-        session.iLeave();
-      }, 2000);
+      // setTimeout(function() {
+      //   session.iLeave();
+      // }, 2000);
 
       session.someoneLeave(function(id) {
         console.log('I leave  =>', id);
-      })
+      })*/
     };
 
   });

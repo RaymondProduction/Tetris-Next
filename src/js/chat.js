@@ -1,38 +1,22 @@
-define('chat',
-  ['socketio'],
-  function(io) {
+define('chat', ['session'],
+  function(sessionModule) {
 
     // Module for organization chat
     function chatObj() {
-      // объект с данными, для пересилки
-      this.data = {
-        name: '',
-        massage: '',
-        list: [],
-        status: '',
-      };
 
       this.input = document.getElementById('m');
-      // имя собеседника
-      this.name = '';
-      // подключаем сокет
-      this.socket = io();
-
-      // this.socket.io.connect('http://localhost');
-
-      // сообщить серверу что кто то подключается
-      this.socket.emit('connected', '');
+      this.session = new sessionModule(['chat', 'cube']);
 
       this.text = null;
       this.massages = null;
-      this.message=null;
-      this.firstLi=null;
-      this.user=null;
-      this.users=null;
-      this.nameUser=null;
-      this.closeButton=null;
-      this.openButton=null;
-      this.minButton=null;
+      this.message = null;
+      this.firstLi = null;
+      this.user = null;
+      this.users = null;
+      this.nameUser = null;
+      this.closeButton = null;
+      this.openButton = null;
+      this.minButton = null;
 
     }
 
@@ -95,7 +79,7 @@ define('chat',
       // будем вместо него со здвигом вниз ставить
       // записи о новых клиентах
       this.firstLi = this.users.getElementsByTagName('li')[0];
-        // если такого элемента не существует (не определен)
+      // если такого элемента не существует (не определен)
       if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
         this.users.appendChild(this.user);
@@ -134,7 +118,14 @@ define('chat',
           // добави к данным сообщения, имя данного пользователя
           self.data.name = self.name;
           // скажем серверу что он подключился и отправим его имя
-          self.socket.emit('joined the chat', JSON.stringify(self.data));
+          self.session.authorize(self.name, function(list) {
+            self.data.list = list;
+            // покажем ему список всех клиентов
+            list.forEach(function(user) {
+              // добавть клиента в список
+              self.addUserList(user);
+            });
+          });
           // уберем теперь имя пользователя
           // с тектового поля для ввода текста
           self.input.value = '';
@@ -144,7 +135,7 @@ define('chat',
           // сообщение сохраним в данные для отправки
           self.data.massage = self.input.value;
           // превращаем в строку JSON и оправляем
-          self.socket.emit('chat message', JSON.stringify(self.data));
+          self.session.sendData('chat', JSON.stringify(self.data));
           // уберем теперь сообщение
           // с тектового поля для ввода текста
           self.input.value = '';
@@ -166,15 +157,15 @@ define('chat',
         chatDIV.className = 'hidden';
         // отправим серверу что клиент покинул чат
         // главное чтоб он был зарегестрирован
-        if (self.name!='') {
-          self.socket.emit('the user leaves', self.name);
+        if (self.name != '') {
+          self.session.iLeave();
         }
         // легкий рестарт чата
         self.reStart();
 
         // покажем кнопку "открыть чат"
         self.openButton.className = 'open';
-        self.openButton.innerHTML='Open Chat';
+        self.openButton.innerHTML = 'Open Chat';
       });
 
       // слушатель на кнопку свернуть
@@ -197,23 +188,8 @@ define('chat',
         chatDIV.className = 'chat';
       });
 
-
-      // если только что подключился ...
-      this.socket.on('someone connected', function(msg) {
-        console.log(msg);
-        self.data = JSON.parse(msg);
-        // и у текущего юзера нет имени то ..
-        if (self.name == '') {
-          // покажем ему список всех клиентов
-          self.data.list.forEach(function(user) {
-            // добавть клиента в список
-            self.addUserList(user);
-          });
-        }
-      });
-
       // если пользователь подключился
-      this.socket.on('joined the chat', function(msg) {
+      this.session.someoneJoined(function(data) {
         // переведем строку JSON в объект данных
         self.data = JSON.parse(msg);
         // подготовим строку для того чтоб
@@ -226,7 +202,7 @@ define('chat',
       });
 
       // оброботка пришедших сообщений
-      this.socket.on('chat message', function(msg) {
+      this.session.arrivedData('chat', function(data) {
         // если имя известно то ...
         if (self.name != '') {
           // переведем строку JSON в объект данных
@@ -238,22 +214,18 @@ define('chat',
         }
       });
 
-      // если пришел запрос на проверку онлайн ли клиент
-      this.socket.on('are you online', function(name) {
-        // узнаем речь ли идет про этого клиента
-        if (self.name == name) {
-          // ответить серверу что да, онлайн!
-          self.socket.emit('i am online', name);
-        }
-      });
 
       // сервер сказал что пора удалить со списка
-      this.socket.on('the user leaves', function(name) {
-        console.log(name);
+      this.session.someoneLeave(function(id) {
         // данный юзер удаляется со списка
         self.deleteUserList(name);
       });
 
+      // сервер сказал что пора удалить со списка
+      this.session.someoneLeaveBecauseTime(function(id) {
+        // данный юзер удаляется со списка
+        self.deleteUserList(name);
+      });
     };
 
     return chatObj;
