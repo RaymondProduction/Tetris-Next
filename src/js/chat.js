@@ -17,7 +17,26 @@ define('chat', ['session'],
       this.closeButton = null;
       this.openButton = null;
       this.minButton = null;
+      this.name = '';
 
+      this.data = {
+        name: '',
+        massage: '',
+        list: [],
+        status: ''
+      }
+
+      var self = this;
+
+      this.session.getList(function(list) {
+        console.log('=========>',list);
+        self.data.list = list;
+        // покажем ему список всех клиентов
+        list.forEach(function(user) {
+          // добавть клиента в список
+          self.addUserList(user);
+        });
+      });
     }
 
     chatObj.prototype.askName = function() {
@@ -118,14 +137,10 @@ define('chat', ['session'],
           // добави к данным сообщения, имя данного пользователя
           self.data.name = self.name;
           // скажем серверу что он подключился и отправим его имя
-          self.session.authorize(self.name, function(list) {
-            self.data.list = list;
-            // покажем ему список всех клиентов
-            list.forEach(function(user) {
-              // добавть клиента в список
-              self.addUserList(user);
-            });
-          });
+          self.session.authorize(self.name);
+          // добавть клиента в список
+          self.addUserList(self.name);
+
           // уберем теперь имя пользователя
           // с тектового поля для ввода текста
           self.input.value = '';
@@ -218,7 +233,7 @@ define('chat', ['session'],
       // сервер сказал что пора удалить со списка
       this.session.someoneLeave(function(id) {
         // данный юзер удаляется со списка
-        self.deleteUserList(name);
+        self.deleteUserList(id);
       });
 
       // сервер сказал что пора удалить со списка
