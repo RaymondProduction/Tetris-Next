@@ -44,9 +44,9 @@ define('session', ['socketio'],
     sessionObj.prototype.someoneJoined = function(call) {
       var self = this;
       this.socket.on('someone joined', function(msg) {
-        var date = JSON.parse(msg);
+        var data = JSON.parse(msg);
         console.log(msg);
-        if (date.id != self.id) {
+        if (data.id != self.id) {
           call(data);
         };
       });
