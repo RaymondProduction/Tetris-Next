@@ -28,13 +28,11 @@ define('chat', ['session'],
 
       var self = this;
 
-      this.session.getList(function(l) {
-        list = JSON.parse(l);
-        console.log('=========>',list);
+      this.session.getList(function(list) {
         self.data.list = list;
         // покажем ему список всех клиентов
         list.forEach(function(user) {
-          // добавть клиента в список
+          // добавь клиента в список
           self.addUserList(user.id,user.name);
         });
       });

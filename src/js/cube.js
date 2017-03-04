@@ -1,17 +1,16 @@
 define('cube', ['socketio'],
   function(io) {
 
-    function cubeObj(size) {
-
+    function cubeObj(size) {;
       this.size = size;
-
+      this.motionless = true;
       this.canvas = document.getElementById('space');
 
       this.numberOfCellsInWidth = Math.floor((this.canvas.width / size));
       this.numberOfCellsInHeight = Math.floor((this.canvas.height / size));
 
-      this.x = Math.round(Math.random() * (this.numberOfCellsInWidth - 1));
-      this.y = Math.round(Math.random() * (this.numberOfCellsInHeight - 1));
+      this.x = Math.round(Math.random() * (this.numberOfCellsInWidth - 2))+1;
+      this.y = Math.round(Math.random() * (this.numberOfCellsInHeight - 2))+1;
 
       this.r = Math.floor(255 - Math.random() * 200);
       this.g = Math.floor(255 - Math.random() * 200);
@@ -21,7 +20,7 @@ define('cube', ['socketio'],
 
       if (this.canvas.getContext) {
         this.ctx = this.canvas.getContext('2d');
-        this.draw();
+       // this.draw();
       }
       this.socket = io();
 
@@ -32,7 +31,18 @@ define('cube', ['socketio'],
       }
 
       this.socket.emit('create cube', JSON.stringify(dataOfcube));
+
+      var self =this;
+
+      this.socket.on('show cubes', function(data){
+        listCubes = JSON.parse(data);
+        listCubes.forEach(function(c){
+          self.otherDarw(c);
+        });
+      });
     }
+
+
 
     cubeObj.prototype.draw = function() {
       this.ctx.fillStyle = this.color;
@@ -69,22 +79,24 @@ define('cube', ['socketio'],
     cubeObj.prototype.start = function() {
       var self = this;
       document.addEventListener('keydown', function(event) {
-        var keyCode = event.keyCode;
-        if (keyCode == 37 ||
-          keyCode == 38 ||
-          keyCode == 39 ||
-          keyCode == 40
-        ) {
-          var dataOfcube = {
-            k: keyCode,
-            x: self.x,
-            y: self.y,
-            color: self.color
+        if (self.motionless) {
+
+          var keyCode = event.keyCode;
+          if (keyCode == 37 ||
+            keyCode == 38 ||
+            keyCode == 39 ||
+            keyCode == 40
+          ) {
+            self.motionless=false;
+            var dataOfcube = {
+              k: keyCode,
+              x: self.x,
+              y: self.y,
+              color: self.color
+            }
+            self.socket.emit('move cube', JSON.stringify(dataOfcube));
           }
-
-          self.socket.emit('move cube', JSON.stringify(dataOfcube));
         }
-
       });
 
       this.socket.on('server move', function(dataOfcube) {
@@ -92,6 +104,7 @@ define('cube', ['socketio'],
         if (c.color == self.color) {
           self.x = c.x;
           self.y = c.y;
+          self.motionless=true;
         };
 
         if (c.ex != undefined && c.ey != undefined) {

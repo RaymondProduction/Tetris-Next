@@ -29,11 +29,12 @@ define('session', ['socketio'],
     };
 
     sessionObj.prototype.getList = function(call) {
+      this.listIsNotReceived = true;
       var self = this;
       this.socket.emit('get list',this.id);
       this.socket.on('list clients', function(list) {
         if (self.listIsNotReceived) {
-          call(list);
+          call(JSON.parse(list));
           self.listIsNotReceived = false;
         }
       });
