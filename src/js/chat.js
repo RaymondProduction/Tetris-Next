@@ -3,10 +3,9 @@ define('chat', ['session'],
 
     // Module for organization chat
     function chatObj() {
-
       this.input = document.getElementById('m');
-      this.session = new sessionModule();
-
+      this.session = new sessionModule('chat');
+       console.log('id',this.session.id);
       this.text = null;
       this.massages = null;
       this.message = null;
@@ -149,7 +148,7 @@ define('chat', ['session'],
           // сообщение сохраним в данные для отправки
           self.data.massage = self.input.value;
           // превращаем в строку JSON и оправляем
-          self.session.sendData('chat', self.data);
+          self.session.sendData(self.data);
           // уберем теперь сообщение
           // с тектового поля для ввода текста
           self.input.value = '';
@@ -217,7 +216,7 @@ define('chat', ['session'],
       });
 
       // оброботка пришедших сообщений
-      this.session.arrivedData('chat', function(id,data) {
+      this.session.arrivedData(function(id,data) {
         // если имя известно то ...
         if (self.name != '') {
           self.data = data;

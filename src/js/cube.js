@@ -1,7 +1,9 @@
-define('cube', ['socketio'],
-  function(io) {
+define('cube', ['session'],
+  function(sessionModule) {
 
-    function cubeObj(size) {;
+    function cubeObj(size) {
+      this.session = new sessionModule('cube');
+      console.log('id',this.session.id);
       this.size = size;
       this.motionless = true;
       this.canvas = document.getElementById('space');
@@ -22,24 +24,28 @@ define('cube', ['socketio'],
         this.ctx = this.canvas.getContext('2d');
        // this.draw();
       }
-      this.socket = io();
+      //this.socket = io();
 
-      var dataOfcube = {
-        x: this.x,
-        y: this.y,
-        color: this.color
-      }
+    //  var dataOfcube = {
+    //    x: this.x,
+    //    y: this.y,
+    //    color: this.color
+    //  }
 
-      this.socket.emit('create cube', JSON.stringify(dataOfcube));
+      this.session.authorize(this.color);
+      //this.socket.emit('create cube', JSON.stringify(dataOfcube));
+
+
+
 
       var self =this;
 
-      this.socket.on('show cubes', function(data){
-        listCubes = JSON.parse(data);
-        listCubes.forEach(function(c){
-          self.otherDarw(c);
-        });
-      });
+     // this.socket.on('show cubes', function(data){
+     //   listCubes = JSON.parse(data);
+     //   listCubes.forEach(function(c){
+     //     self.otherDarw(c);
+     //   });
+     // });
     }
 
 
@@ -94,24 +100,24 @@ define('cube', ['socketio'],
               y: self.y,
               color: self.color
             }
-            self.socket.emit('move cube', JSON.stringify(dataOfcube));
+           // self.socket.emit('move cube', JSON.stringify(dataOfcube));
+           self.session.sendData(dataOfcube);
           }
         }
       });
 
-      this.socket.on('server move', function(dataOfcube) {
-        c = JSON.parse(dataOfcube);
-        if (c.color == self.color) {
-          self.x = c.x;
-          self.y = c.y;
+       this.session.arrivedData(function(id,dataOfcube){
+        if (dataOfcube.color == self.color) {
+          self.x = dataOfcube.x;
+          self.y = dataOfcube.y;
           self.motionless=true;
         };
 
-        if (c.ex != undefined && c.ey != undefined) {
+        if (dataOfcube.ex != undefined && dataOfcube.ey != undefined) {
           self.ctx.fillStyle = 'white';
           self.ctx.fillRect(
-            c.ex * self.size,
-            c.ey * self.size,
+            dataOfcube.ex * self.size,
+            dataOfcube.ey * self.size,
             self.size,
             self.size
           );
