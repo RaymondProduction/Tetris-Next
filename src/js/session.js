@@ -2,9 +2,8 @@ define('session', ['socketio'],
   function(io) {
 
     // Module for organization session client <--> server
-    function sessionObj(classes) {
+    function sessionObj() {
       this.listIsNotReceived = true;
-      this.classes = classes;
       this.id = Math.floor(Math.random() * 7000000000);
       this.socket = io();
       this.socket.emit('connected', this.id);
@@ -45,7 +44,6 @@ define('session', ['socketio'],
       var self = this;
       this.socket.on('someone joined', function(msg) {
         var data = JSON.parse(msg);
-        console.log(msg);
         if (data.id != self.id) {
           call(data);
         };

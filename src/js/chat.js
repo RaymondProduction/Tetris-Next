@@ -5,7 +5,7 @@ define('chat', ['session'],
     function chatObj() {
 
       this.input = document.getElementById('m');
-      this.session = new sessionModule(['chat', 'cube']);
+      this.session = new sessionModule();
 
       this.text = null;
       this.massages = null;
