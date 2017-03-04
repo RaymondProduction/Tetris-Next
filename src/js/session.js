@@ -7,10 +7,7 @@ define('session', ['socketio'],
       this.classes = classes;
       this.id = Math.floor(Math.random() * 7000000000);
       this.socket = io();
-      this.socket.emit('connected', JSON.stringify({
-        id: this.id,
-        classes: this.classes,
-      }));
+      this.socket.emit('connected', this.id);
       var self = this;
       // если пришел запрос на проверку онлайн ли клиент
       this.socket.on('are you online', function(id) {
@@ -23,24 +20,6 @@ define('session', ['socketio'],
       });
     };
 
-    sessionObj.prototype.getList = function(call) {
-      var self = this;
-      this.socket.emit('get list',this.id);
-      this.socket.on('list clients', function(msg) {
-        var data = JSON.parse(msg);
-        var list = [];
-        data.forEach(function(d) {
-          if (d.name!='') {
-            list.push(d.name);
-          };
-        });
-        if (self.listIsNotReceived) {
-          call(list);
-          self.listIsNotReceived = false;
-        }
-      });
-    }
-
     sessionObj.prototype.authorize = function(name) {
       var self = this;
       this.name = name;
@@ -49,13 +28,26 @@ define('session', ['socketio'],
         name: this.name,
       }));
     };
+
+    sessionObj.prototype.getList = function(call) {
+      var self = this;
+      this.socket.emit('get list',this.id);
+      this.socket.on('list clients', function(list) {
+        if (self.listIsNotReceived) {
+          call(list);
+          self.listIsNotReceived = false;
+        }
+      });
+    }
+
+
     sessionObj.prototype.someoneJoined = function(call) {
       var self = this;
       this.socket.on('someone joined', function(msg) {
         var date = JSON.parse(msg);
         console.log(msg);
         if (date.id != self.id) {
-          call(msg);
+          call(data);
         };
       });
     }
@@ -82,14 +74,15 @@ define('session', ['socketio'],
       var self = this;
       this.socket.on('data', function(msg) {
         data = JSON.parse(msg);
-        if (data.cl == cl && data.id != self.id) {
-          call(data.obj);
+        if (data.cl == cl /*&& data.id != self.id*/) {
+          call(data.id,data.obj);
         };
       });
     }
 
     sessionObj.prototype.sendData = function(cl, obj) {
       data = {
+        cl: cl,
         id: this.id,
         obj: obj,
       }

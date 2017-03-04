@@ -28,13 +28,14 @@ define('chat', ['session'],
 
       var self = this;
 
-      this.session.getList(function(list) {
+      this.session.getList(function(l) {
+        list = JSON.parse(l);
         console.log('=========>',list);
         self.data.list = list;
         // покажем ему список всех клиентов
         list.forEach(function(user) {
           // добавть клиента в список
-          self.addUserList(user);
+          self.addUserList(user.id,user.name);
         });
       });
     }
@@ -74,23 +75,23 @@ define('chat', ['session'],
     };
 
     // удалить юзера с списка юзеров
-    chatObj.prototype.deleteUserList = function(u) {
+    chatObj.prototype.deleteUserList = function(id) {
       // найдем по id элемент списка
-      this.user = document.getElementById(u);
+      this.user = document.getElementById(id);
       // получим список юзеров
       this.users = document.getElementById('users');
       // удалим элемент списка из списка юзеров
       this.users.removeChild(this.user);
     };
 
-    chatObj.prototype.addUserList = function(u) {
+    chatObj.prototype.addUserList = function(id,name) {
       // подготовим список (ul), пользователей
       this.users = document.getElementById('users');
       // добавим имя пользователя
-      this.nameUser = document.createTextNode(u);
+      this.nameUser = document.createTextNode(name);
       // подготовим елемент списка пользователей
       this.user = document.createElement('li');
-      this.user.id = u;
+      this.user.id = id;
       // добавим имя пользователя в элемент списка
       this.user.appendChild(this.nameUser);
 
@@ -139,7 +140,7 @@ define('chat', ['session'],
           // скажем серверу что он подключился и отправим его имя
           self.session.authorize(self.name);
           // добавть клиента в список
-          self.addUserList(self.name);
+          self.addUserList(self.session.id,self.name);
 
           // уберем теперь имя пользователя
           // с тектового поля для ввода текста
@@ -150,7 +151,7 @@ define('chat', ['session'],
           // сообщение сохраним в данные для отправки
           self.data.massage = self.input.value;
           // превращаем в строку JSON и оправляем
-          self.session.sendData('chat', JSON.stringify(self.data));
+          self.session.sendData('chat', self.data);
           // уберем теперь сообщение
           // с тектового поля для ввода текста
           self.input.value = '';
@@ -205,26 +206,27 @@ define('chat', ['session'],
 
       // если пользователь подключился
       this.session.someoneJoined(function(data) {
-        // переведем строку JSON в объект данных
-        self.data = JSON.parse(msg);
+        self.data = data;
         // подготовим строку для того чтоб
         // всему "миру" сказать что есть этот пользователь
         st = 'Robot> ' + self.data.name + ' joined the chat';
         // добавим сконца списка
-        self.addUserList(self.data.list[self.data.list.length - 1]);
+        //self.data.list[self.data.list.length - 1]
+        //self.data.list.push(data.name);
+        self.addUserList(data.id,data.name);
         // добавим подготовленую строку как сообщение
         self.addMassage(st);
       });
 
       // оброботка пришедших сообщений
-      this.session.arrivedData('chat', function(data) {
+      this.session.arrivedData('chat', function(id,data) {
         // если имя известно то ...
         if (self.name != '') {
-          // переведем строку JSON в объект данных
-          self.data = JSON.parse(msg);
+          self.data = data;
           // подготовим строку
           st = self.data.name + '> ' + self.data.massage;
           // добавим сообщение
+          console.log(st);
           self.addMassage(st);
         }
       });
@@ -239,7 +241,7 @@ define('chat', ['session'],
       // сервер сказал что пора удалить со списка
       this.session.someoneLeaveBecauseTime(function(id) {
         // данный юзер удаляется со списка
-        self.deleteUserList(name);
+        self.deleteUserList(id);
       });
     };
 
