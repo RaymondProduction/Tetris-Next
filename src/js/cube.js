@@ -33,12 +33,9 @@ define('cube', ['session'],
     //  }
 
       this.session.authorize(this.color);
+      this.draw();
       //this.socket.emit('create cube', JSON.stringify(dataOfcube));
 
-
-
-
-      var self =this;
 
      // this.socket.on('show cubes', function(data){
      //   listCubes = JSON.parse(data);
@@ -51,6 +48,7 @@ define('cube', ['session'],
 
 
     cubeObj.prototype.draw = function() {
+      console.log('i am draw');
       this.ctx.fillStyle = this.color;
       this.ctx.fillRect(
         this.x * this.size,
@@ -101,6 +99,7 @@ define('cube', ['session'],
               color: self.color
             }
            // self.socket.emit('move cube', JSON.stringify(dataOfcube));
+           console.log(dataOfcube.k);
            self.session.sendData(dataOfcube);
           }
         }
@@ -123,7 +122,7 @@ define('cube', ['session'],
           );
         }
 
-        self.otherDarw(c);
+        self.otherDarw(c); // !!!! error undefined
 
 
       })
