@@ -22,10 +22,32 @@ define('cube', ['session'],
 
       if (this.canvas.getContext) {
         this.ctx = this.canvas.getContext('2d');
-         this.draw();
+        this.draw();
       }
 
-      this.session.authorize(this.color);
+      var self = this;
+      // если при авторизации отправляем объект, то у других
+      // клиетов сроботает метод someoneJoinedMoreInformation
+      // будет передано больше информации
+      this.session.authorize(this.color, {
+        color: this.color,
+        x: this.x,
+        y: this.y,
+      });
+
+      this.session.someoneJoinedMoreInformation(function(otherCube) {
+        self.otherDarw(otherCube);
+      });
+
+      this.session.giveMoreInformation({
+          color: this.color,
+          x: this.x,
+          y: this.y,
+        },
+        function(otherCube) {
+          self.otherDarw(otherCube);
+        });
+
     }
 
 
@@ -66,12 +88,6 @@ define('cube', ['session'],
     cubeObj.prototype.start = function() {
       var self = this;
 
-      self.session.sendData({
-        k: 0,
-        x: self.x,
-        y: self.y,
-        color: self.color
-      });
 
       document.addEventListener('keydown', function(event) {
         if (self.motionless) {
@@ -112,11 +128,25 @@ define('cube', ['session'],
           );
         }
 
-        self.otherDarw(dataOfcube); // !!!! error undefined
+        self.otherDarw(dataOfcube);
 
 
       })
 
+
+      // если куб в оффлайн стереть всех и нарисовать заново
+      this.session.someoneLeaveBecauseTime(function() {
+        self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height)
+        self.session.giveMoreInformation({
+            color: self.color,
+            x: self.x,
+            y: self.y,
+          },
+          function(otherCube) {
+           // self.ctx.fillStyle = 'white';
+            self.otherDarw(otherCube);
+          });
+      });
 
     }
 

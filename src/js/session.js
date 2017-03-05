@@ -7,7 +7,7 @@ define('session', ['socketio'],
       this.listIsNotReceived = true;
       this.id = Math.floor(Math.random() * 7000000000);
       this.socket = io();
-       var self = this;
+      var self = this;
       this.socket.emit('connected', JSON.stringify({
         id: self.id,
         cl: self.cl,
@@ -29,14 +29,21 @@ define('session', ['socketio'],
       });
     };
 
-    sessionObj.prototype.authorize = function(name) {
+    sessionObj.prototype.authorize = function(name, obj) {
       var self = this;
       this.name = name;
       this.socket.emit('joined', JSON.stringify({
         id: this.id,
         name: this.name,
-        cl : this.cl,
+        cl: this.cl,
       }));
+      if (obj != undefined) {
+        this.socket.emit('joined more information', JSON.stringify({
+          obj: obj,
+          id: this.id,
+          cl: this.cl,
+        }));
+      }
     };
 
     sessionObj.prototype.getList = function(call) {
@@ -58,6 +65,16 @@ define('session', ['socketio'],
         var data = JSON.parse(msg);
         if (data.id != self.id && data.cl == self.cl) {
           call(data);
+        };
+      });
+    }
+
+    sessionObj.prototype.someoneJoinedMoreInformation = function(call) {
+      var self = this;
+      this.socket.on('joined more information', function(msg) {
+        var data = JSON.parse(msg);
+        if (data.id != self.id && data.cl == self.cl) {
+          call(data.obj);
         };
       });
     }
@@ -104,5 +121,26 @@ define('session', ['socketio'],
       }
       this.socket.emit('send', JSON.stringify(data));
     }
+
+    sessionObj.prototype.giveMoreInformation = function(obj, call) {
+        var self = this;
+        this.socket.emit('more information');
+        this.socket.on('more information', function() {
+          self.socket.emit('more information about this', JSON.stringify({
+            obj: obj,
+            cl: self.cl,
+            id: self.id,
+          }));
+        });
+        this.socket.on('more information about this', function(msg) {
+          data = JSON.parse(msg);
+          if (data.cl == self.cl /*&& data.id != self.id*/ ) {
+            call(data.obj);
+          };
+        });
+      }
+
+
+
     return sessionObj;
   });
