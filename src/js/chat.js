@@ -5,7 +5,6 @@ define('chat', ['session'],
     function chatObj() {
       this.input = document.getElementById('m');
       this.session = new sessionModule('chat');
-       console.log('id',this.session.id);
       this.text = null;
       this.massages = null;
       this.message = null;
@@ -223,7 +222,6 @@ define('chat', ['session'],
           // подготовим строку
           st = self.data.name + '> ' + self.data.massage;
           // добавим сообщение
-          console.log(st);
           self.addMassage(st);
         }
       });

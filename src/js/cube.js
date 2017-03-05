@@ -3,7 +3,7 @@ define('cube', ['session'],
 
     function cubeObj(size) {
       this.session = new sessionModule('cube');
-      console.log('id',this.session.id);
+      console.log('id', this.session.id);
       this.size = size;
       this.motionless = true;
       this.canvas = document.getElementById('space');
@@ -11,8 +11,8 @@ define('cube', ['session'],
       this.numberOfCellsInWidth = Math.floor((this.canvas.width / size));
       this.numberOfCellsInHeight = Math.floor((this.canvas.height / size));
 
-      this.x = Math.round(Math.random() * (this.numberOfCellsInWidth - 2))+1;
-      this.y = Math.round(Math.random() * (this.numberOfCellsInHeight - 2))+1;
+      this.x = Math.round(Math.random() * (this.numberOfCellsInWidth - 2)) + 1;
+      this.y = Math.round(Math.random() * (this.numberOfCellsInHeight - 2)) + 1;
 
       this.r = Math.floor(255 - Math.random() * 200);
       this.g = Math.floor(255 - Math.random() * 200);
@@ -22,27 +22,10 @@ define('cube', ['session'],
 
       if (this.canvas.getContext) {
         this.ctx = this.canvas.getContext('2d');
-       // this.draw();
+         this.draw();
       }
-      //this.socket = io();
-
-    //  var dataOfcube = {
-    //    x: this.x,
-    //    y: this.y,
-    //    color: this.color
-    //  }
 
       this.session.authorize(this.color);
-      this.draw();
-      //this.socket.emit('create cube', JSON.stringify(dataOfcube));
-
-
-     // this.socket.on('show cubes', function(data){
-     //   listCubes = JSON.parse(data);
-     //   listCubes.forEach(function(c){
-     //     self.otherDarw(c);
-     //   });
-     // });
     }
 
 
@@ -82,6 +65,14 @@ define('cube', ['session'],
     }
     cubeObj.prototype.start = function() {
       var self = this;
+
+      self.session.sendData({
+        k: 0,
+        x: self.x,
+        y: self.y,
+        color: self.color
+      });
+
       document.addEventListener('keydown', function(event) {
         if (self.motionless) {
 
@@ -91,25 +82,24 @@ define('cube', ['session'],
             keyCode == 39 ||
             keyCode == 40
           ) {
-            self.motionless=false;
+            self.motionless = false;
             var dataOfcube = {
-              k: keyCode,
-              x: self.x,
-              y: self.y,
-              color: self.color
-            }
-           // self.socket.emit('move cube', JSON.stringify(dataOfcube));
-           console.log(dataOfcube.k);
-           self.session.sendData(dataOfcube);
+                k: keyCode,
+                x: self.x,
+                y: self.y,
+                color: self.color
+              }
+              // self.socket.emit('move cube', JSON.stringify(dataOfcube));
+            self.session.sendData(dataOfcube);
           }
         }
       });
 
-       this.session.arrivedData(function(id,dataOfcube){
+      this.session.arrivedData(function(id, dataOfcube) {
         if (dataOfcube.color == self.color) {
           self.x = dataOfcube.x;
           self.y = dataOfcube.y;
-          self.motionless=true;
+          self.motionless = true;
         };
 
         if (dataOfcube.ex != undefined && dataOfcube.ey != undefined) {
@@ -122,7 +112,7 @@ define('cube', ['session'],
           );
         }
 
-        self.otherDarw(c); // !!!! error undefined
+        self.otherDarw(dataOfcube); // !!!! error undefined
 
 
       })
