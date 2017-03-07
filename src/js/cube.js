@@ -132,23 +132,24 @@ define('cube', ['session'],
         }
 
         // нарисовать все кубы на карте по запросу "список"
-        if (dataOfcube.why == 'list') {
+        if (dataOfcube.why == 'list' && self.id!=id) {
           self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
           dataOfcube.list.forEach(function(c) {
             self.otherDarw(c);
           });
         }
-      });
 
+        // если куб ушел по фактору времени то уберем его
+        if (dataOfcube.why == 'time'){
+            self.ctx.fillStyle = 'white';
+            self.ctx.fillRect(
+              dataOfcube.x * self.size,
+              dataOfcube.y * self.size,
+              self.size,
+              self.size
+            );
+        }
 
-      // если куб в оффлайн стереть всех и нарисовать заново
-      this.session.someoneLeaveBecauseTime(function() {
-        self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-        // запрос "список" на список новых кубов
-        self.session.sendData({
-          why: 'list',
-          color: this.color,
-        });
       });
 
     };
