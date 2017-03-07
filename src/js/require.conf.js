@@ -4,7 +4,7 @@ requirejs.config({
 
   // Parametr for short id
   paths: {
-    'canvas': '../bower_components/canvas-5-polyfill/canvas',
-   'socketio': '../socket.io/socket.io'
-  }
+   'canvas': '../bower_components/canvas-5-polyfill/canvas',
+   'socketio': '../socket.io/socket.io',
+  },
 });

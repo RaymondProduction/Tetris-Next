@@ -1,8 +1,8 @@
 define('cube', ['session'],
-  function(sessionModule) {
+  function(SessionModule) {
 
     function cubeObj(size) {
-      this.session = new sessionModule('cube');
+      this.session = new SessionModule('cube');
       console.log('id', this.session.id);
       this.size = size;
       this.motionless = true;
@@ -18,14 +18,13 @@ define('cube', ['session'],
       this.g = Math.floor(255 - Math.random() * 200);
       this.b = Math.floor(255 - Math.random() * 200);
 
-      this.color = "rgb(" + this.r + "," + this.g + "," + this.b + ")";
+      this.color = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
 
       if (this.canvas.getContext) {
         this.ctx = this.canvas.getContext('2d');
         this.draw();
       }
 
-      var self = this;
       // авторизация нового куба, в качестве имени цвет куба
       this.session.authorize(this.color);
 
@@ -42,9 +41,7 @@ define('cube', ['session'],
         why: 'list',
         color: this.color,
       });
-    }
-
-
+    };
 
     cubeObj.prototype.draw = function() {
       console.log('i am draw');
@@ -63,6 +60,7 @@ define('cube', ['session'],
         this.size - 2
       );
     };
+
     cubeObj.prototype.otherDarw = function(c) {
       this.ctx.fillStyle = c.color;
       this.ctx.fillRect(
@@ -78,7 +76,8 @@ define('cube', ['session'],
         this.size - 2,
         this.size - 2
       );
-    }
+    };
+
     cubeObj.prototype.start = function() {
       var self = this;
 
@@ -98,8 +97,8 @@ define('cube', ['session'],
                 k: keyCode,
                 x: self.x,
                 y: self.y,
-                color: self.color
-              }
+                color: self.color,
+              };
             self.session.sendData(dataOfcube);
           }
         }
@@ -139,10 +138,10 @@ define('cube', ['session'],
             self.otherDarw(c);
           });
         }
-      })
+      });
 
 
-      //если куб в оффлайн стереть всех и нарисовать заново
+      // если куб в оффлайн стереть всех и нарисовать заново
       this.session.someoneLeaveBecauseTime(function() {
         self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
         // запрос "список" на список новых кубов
@@ -152,7 +151,7 @@ define('cube', ['session'],
         });
       });
 
-    }
+    };
 
     return cubeObj;
 

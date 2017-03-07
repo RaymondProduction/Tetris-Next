@@ -30,7 +30,6 @@ define('session', ['socketio'],
     };
 
     sessionObj.prototype.authorize = function(name, obj) {
-      var self = this;
       this.name = name;
       this.socket.emit('joined', JSON.stringify({
         id: this.id,
@@ -56,7 +55,7 @@ define('session', ['socketio'],
           self.listIsNotReceived = false;
         }
       });
-    }
+    };
 
 
     sessionObj.prototype.someoneJoined = function(call) {
@@ -67,11 +66,11 @@ define('session', ['socketio'],
           call(data);
         };
       });
-    }
+    };
 
     sessionObj.prototype.iLeave = function() {
       this.socket.emit('the client leaves', this.id);
-    }
+    };
 
     sessionObj.prototype.someoneLeave = function(call) {
       var self = this;
@@ -81,7 +80,7 @@ define('session', ['socketio'],
           call(data.id);
         }
       });
-    }
+    };
 
     sessionObj.prototype.someoneLeaveBecauseTime = function(call) {
       var self = this;
@@ -91,26 +90,26 @@ define('session', ['socketio'],
           call(data.id);
         }
       });
-    }
+    };
 
     sessionObj.prototype.arrivedData = function(call) {
       var self = this;
       this.socket.on('data', function(msg) {
         data = JSON.parse(msg);
-        if (data.cl == self.cl /*&& data.id != self.id*/ ) {
+        if (data.cl == self.cl) {
           call(data.id, data.obj);
         };
       });
-    }
+    };
 
     sessionObj.prototype.sendData = function(obj) {
       data = {
         cl: this.cl,
         id: this.id,
         obj: obj,
-      }
+      };
       this.socket.emit('send', JSON.stringify(data));
-    }
+    };
 
 
     return sessionObj;

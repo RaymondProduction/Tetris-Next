@@ -1,10 +1,10 @@
 define('chat', ['session'],
-  function(sessionModule) {
+  function(SessionModule) {
 
     // Module for organization chat
     function chatObj() {
       this.input = document.getElementById('m');
-      this.session = new sessionModule('chat');
+      this.session = new SessionModule('chat');
       this.text = null;
       this.massages = null;
       this.message = null;
@@ -21,8 +21,8 @@ define('chat', ['session'],
         name: '',
         massage: '',
         list: [],
-        status: ''
-      }
+        status: '',
+      };
 
       var self = this;
 
@@ -31,7 +31,7 @@ define('chat', ['session'],
         // покажем ему список всех клиентов
         list.forEach(function(user) {
           // добавь клиента в список
-          self.addUserList(user.id,user.name);
+          self.addUserList(user.id, user.name);
         });
       });
     }
@@ -80,7 +80,7 @@ define('chat', ['session'],
       this.users.removeChild(this.user);
     };
 
-    chatObj.prototype.addUserList = function(id,name) {
+    chatObj.prototype.addUserList = function(id, name) {
       // подготовим список (ul), пользователей
       this.users = document.getElementById('users');
       // добавим имя пользователя
@@ -136,7 +136,7 @@ define('chat', ['session'],
           // скажем серверу что он подключился и отправим его имя
           self.session.authorize(self.name);
           // добавть клиента в список
-          self.addUserList(self.session.id,self.name);
+          self.addUserList(self.session.id, self.name);
 
           // уберем теперь имя пользователя
           // с тектового поля для ввода текста
@@ -207,15 +207,13 @@ define('chat', ['session'],
         // всему "миру" сказать что есть этот пользователь
         st = 'Robot> ' + self.data.name + ' joined the chat';
         // добавим сконца списка
-        //self.data.list[self.data.list.length - 1]
-        //self.data.list.push(data.name);
-        self.addUserList(data.id,data.name);
+        self.addUserList(data.id, data.name);
         // добавим подготовленую строку как сообщение
         self.addMassage(st);
       });
 
       // оброботка пришедших сообщений
-      this.session.arrivedData(function(id,data) {
+      this.session.arrivedData(function(id, data) {
         // если имя известно то ...
         if (self.name != '') {
           self.data = data;
