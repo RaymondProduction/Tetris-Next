@@ -69,16 +69,6 @@ define('session', ['socketio'],
       });
     }
 
-    sessionObj.prototype.someoneJoinedMoreInformation = function(call) {
-      var self = this;
-      this.socket.on('joined more information', function(msg) {
-        var data = JSON.parse(msg);
-        if (data.id != self.id && data.cl == self.cl) {
-          call(data.obj);
-        };
-      });
-    }
-
     sessionObj.prototype.iLeave = function() {
       this.socket.emit('the client leaves', this.id);
     }
@@ -121,25 +111,6 @@ define('session', ['socketio'],
       }
       this.socket.emit('send', JSON.stringify(data));
     }
-
-    sessionObj.prototype.giveMoreInformation = function(obj, call) {
-        var self = this;
-        this.socket.emit('more information');
-        this.socket.on('more information', function() {
-          self.socket.emit('more information about this', JSON.stringify({
-            obj: obj,
-            cl: self.cl,
-            id: self.id,
-          }));
-        });
-        this.socket.on('more information about this', function(msg) {
-          data = JSON.parse(msg);
-          if (data.cl == self.cl /*&& data.id != self.id*/ ) {
-            call(data.obj);
-          };
-        });
-      }
-
 
 
     return sessionObj;

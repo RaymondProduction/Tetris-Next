@@ -26,28 +26,22 @@ define('cube', ['session'],
       }
 
       var self = this;
-      // если при авторизации отправляем объект, то у других
-      // клиетов сроботает метод someoneJoinedMoreInformation
-      // будет передано больше информации
-      this.session.authorize(this.color, {
+      // авторизация нового куба, в качестве имени цвет куба
+      this.session.authorize(this.color);
+
+      // отправить координаты нового куба чтобы, поставили другие
+      // клиенты себе на карте
+      this.session.sendData({
+        why: 'put',
         color: this.color,
         x: this.x,
         y: this.y,
       });
-
-      this.session.someoneJoinedMoreInformation(function(otherCube) {
-        self.otherDarw(otherCube);
+      // запрос на список кубов которые в "онлайн"
+      this.session.sendData({
+        why: 'list',
+        color: this.color,
       });
-
-      this.session.giveMoreInformation({
-          color: this.color,
-          x: this.x,
-          y: this.y,
-        },
-        function(otherCube) {
-          self.otherDarw(otherCube);
-        });
-
     }
 
 
@@ -100,52 +94,62 @@ define('cube', ['session'],
           ) {
             self.motionless = false;
             var dataOfcube = {
+                why: 'move',
                 k: keyCode,
                 x: self.x,
                 y: self.y,
                 color: self.color
               }
-              // self.socket.emit('move cube', JSON.stringify(dataOfcube));
             self.session.sendData(dataOfcube);
           }
         }
       });
 
       this.session.arrivedData(function(id, dataOfcube) {
-        if (dataOfcube.color == self.color) {
-          self.x = dataOfcube.x;
-          self.y = dataOfcube.y;
-          self.motionless = true;
-        };
+        // при передвижении  куба, поменять координаты
+        if (dataOfcube.why == 'move') {
+          if (dataOfcube.color == self.color) {
+            self.x = dataOfcube.x;
+            self.y = dataOfcube.y;
+            self.motionless = true;
+          };
 
-        if (dataOfcube.ex != undefined && dataOfcube.ey != undefined) {
-          self.ctx.fillStyle = 'white';
-          self.ctx.fillRect(
-            dataOfcube.ex * self.size,
-            dataOfcube.ey * self.size,
-            self.size,
-            self.size
-          );
+          if (dataOfcube.ex != undefined && dataOfcube.ey != undefined) {
+            self.ctx.fillStyle = 'white';
+            self.ctx.fillRect(
+              dataOfcube.ex * self.size,
+              dataOfcube.ey * self.size,
+              self.size,
+              self.size
+            );
+          }
+
+          self.otherDarw(dataOfcube);
         }
 
-        self.otherDarw(dataOfcube);
+        // поставить куб
+        if (dataOfcube.why == 'put') {
+          self.otherDarw(dataOfcube);
+        }
 
-
+        // нарисовать все кубы на карте по запросу "список"
+        if (dataOfcube.why == 'list') {
+          self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+          dataOfcube.list.forEach(function(c) {
+            self.otherDarw(c);
+          });
+        }
       })
 
 
-      // если куб в оффлайн стереть всех и нарисовать заново
+      //если куб в оффлайн стереть всех и нарисовать заново
       this.session.someoneLeaveBecauseTime(function() {
-        self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height)
-        self.session.giveMoreInformation({
-            color: self.color,
-            x: self.x,
-            y: self.y,
-          },
-          function(otherCube) {
-           // self.ctx.fillStyle = 'white';
-            self.otherDarw(otherCube);
-          });
+        self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+        // запрос "список" на список новых кубов
+        self.session.sendData({
+          why: 'list',
+          color: this.color,
+        });
       });
 
     }
