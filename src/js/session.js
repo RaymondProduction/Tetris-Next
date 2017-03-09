@@ -13,10 +13,6 @@ define('session', ['socketio'],
         cl: self.cl,
       }));
 
-      console.log({
-        id: self.id,
-        cl: self.cl,
-      });
 
       // если пришел запрос на проверку онлайн ли клиент
       this.socket.on('are you online', function(id) {
@@ -24,9 +20,15 @@ define('session', ['socketio'],
         if (self.id == id) {
           // ответить серверу что да, онлайн!
           self.socket.emit('i am online', id);
-
         }
       });
+
+      // если закрыли окно то отправить запрос что он
+      // покинул сессию
+      window.onbeforeunload = function(e) {
+        debugger;
+        self.socket.emit('the client leaves', self.id);
+      };
     };
 
     sessionObj.prototype.authorize = function(name, obj) {

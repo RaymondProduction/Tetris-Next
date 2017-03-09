@@ -81,16 +81,6 @@ define('cube', ['session'],
     cubeObj.prototype.start = function() {
       var self = this;
 
-      // если закрыли окно то отправить запрос
-      window.onbeforeunload = function(e) {
-        self.session.sendData({
-          why: 'close window',
-          color: self.color,
-          x: self.x,
-          y: self.y,
-        });
-      };
-
       document.addEventListener('keydown', function(event) {
         if (self.motionless) {
 
@@ -148,8 +138,9 @@ define('cube', ['session'],
           });
         }
 
-        // если куб ушел по фактору времени то уберем его
-        if (dataOfcube.why == 'time' || dataOfcube.why == 'close window') {
+        // если куб ушел по фактору времени
+        // или закрыли окно то уберем его
+        if (dataOfcube.why == 'leave') {
           self.ctx.fillStyle = 'white';
           self.ctx.fillRect(
             dataOfcube.x * self.size,
