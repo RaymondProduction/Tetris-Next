@@ -81,6 +81,15 @@ define('cube', ['session'],
     cubeObj.prototype.start = function() {
       var self = this;
 
+      // если закрыли окно то отправить запрос
+      window.onbeforeunload = function(e) {
+        self.session.sendData({
+          why: 'close window',
+          color: self.color,
+          x: self.x,
+          y: self.y,
+        });
+      };
 
       document.addEventListener('keydown', function(event) {
         if (self.motionless) {
@@ -93,12 +102,12 @@ define('cube', ['session'],
           ) {
             self.motionless = false;
             var dataOfcube = {
-                why: 'move',
-                k: keyCode,
-                x: self.x,
-                y: self.y,
-                color: self.color,
-              };
+              why: 'move',
+              k: keyCode,
+              x: self.x,
+              y: self.y,
+              color: self.color,
+            };
             self.session.sendData(dataOfcube);
           }
         }
@@ -132,7 +141,7 @@ define('cube', ['session'],
         }
 
         // нарисовать все кубы на карте по запросу "список"
-        if (dataOfcube.why == 'list' && self.id!=id) {
+        if (dataOfcube.why == 'list' && self.id != id) {
           self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
           dataOfcube.list.forEach(function(c) {
             self.otherDarw(c);
@@ -140,14 +149,14 @@ define('cube', ['session'],
         }
 
         // если куб ушел по фактору времени то уберем его
-        if (dataOfcube.why == 'time'){
-            self.ctx.fillStyle = 'white';
-            self.ctx.fillRect(
-              dataOfcube.x * self.size,
-              dataOfcube.y * self.size,
-              self.size,
-              self.size
-            );
+        if (dataOfcube.why == 'time' || dataOfcube.why == 'close window') {
+          self.ctx.fillStyle = 'white';
+          self.ctx.fillRect(
+            dataOfcube.x * self.size,
+            dataOfcube.y * self.size,
+            self.size,
+            self.size
+          );
         }
 
       });
