@@ -43,8 +43,17 @@ define('cube', ['session'],
       });
     };
 
+    cubeObj.prototype.clearDraw = function(c) {
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillRect(
+        c.x * this.size,
+        c.y * this.size,
+        this.size,
+        this.size
+      );
+    }
+
     cubeObj.prototype.draw = function() {
-      console.log('i am draw');
       this.ctx.fillStyle = this.color;
       this.ctx.fillRect(
         this.x * this.size,
@@ -141,13 +150,7 @@ define('cube', ['session'],
         // если куб ушел по фактору времени
         // или закрыли окно то уберем его
         if (dataOfcube.why == 'leave') {
-          self.ctx.fillStyle = 'white';
-          self.ctx.fillRect(
-            dataOfcube.x * self.size,
-            dataOfcube.y * self.size,
-            self.size,
-            self.size
-          );
+          self.clearDraw(dataOfcube);
         }
 
       });
