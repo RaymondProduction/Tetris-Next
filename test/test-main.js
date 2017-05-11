@@ -8,14 +8,14 @@ for (var file in window.__karma__.files) {
 
 requirejs.config({
     // Karma serves files from '/base'
-    baseUrl: '/base/js',
+    baseUrl: '/base',
     // обязательно пути ко всем модулям которые будут в карме
     paths: {
-        'chat':'../js/chat',
-        'cube':'../js/cube',
-        'canvas': '../bower_components/canvas-5-polyfill/canvas',
-     //   'socketio': '../socket.io/socket.io'
-        //'canvas':'../bower_components/canvas-5-polyfill/canvas'
+        'chat':'./src/js/chat',
+        'cube':'./src/js/cube',
+        'canvas': './bower_components/canvas-5-polyfill/canvas',
+        // создан фективный модуль soketio для тестирования
+        'socketio': './test/socketioForTest'
     },
 
     // ask Require.js to load these files (all our tests)
