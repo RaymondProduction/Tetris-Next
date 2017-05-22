@@ -18,8 +18,12 @@ require(['chat', 'cube', 'session'],
       request.setRequestHeader('authorization', 'token ' + getUrlVars()['t']);
       request.setRequestHeader('accept', 'application/json');
       request.onload = function() {
-        alert(request.responseText);
-        console.log(request.responseText);
+        //alert(request.responseText);
+        //console.log(request.responseText);
+        var res = JSON.parse(request.responseText);
+        console.log('Login:',res.login);
+        console.log('name: ', res.name);
+        console.log('id:', res.id);
       }
       request.send(null);
 
