@@ -14,9 +14,9 @@ require(['chat', 'cube', 'session'],
 
       console.log(getUrlVars()['t']);
       var request = new XMLHttpRequest();
+      request.open("GET", "https://api.github.com/user", true);
       request.setRequestHeader('authorization', 'token ' + getUrlVars()['t']);
       request.setRequestHeader('accept', 'application/json');
-      request.open("GET", "https://api.github.com/user", false);
       request.onload = function() {
         alert(request.responseText);
         console.log(request.responseText);
