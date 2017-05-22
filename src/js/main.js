@@ -12,6 +12,8 @@ require(['chat', 'cube', 'session'],
 
     function start() {
 
+      console.log('Cookie: ',document.cookie);
+
       console.log(getUrlVars()['t']);
       var request = new XMLHttpRequest();
       request.open("GET", "https://api.github.com/user", true);
