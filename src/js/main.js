@@ -12,7 +12,7 @@ require(['chat', 'cube', 'session'],
 
     function start() {
 
-      console.log(getUrlVars()['login']);
+      console.log(getUrlVars()['t']);
 
       // активация чат
       chat = new ChatModule();
