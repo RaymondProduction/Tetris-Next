@@ -40,8 +40,10 @@ define('chat', ['session'],
       // узнаем имя, и запишем в поле name
       this.name = userData.name;
 
-      var h = document.getElementById('name');
-      h.appendChild(this.name);
+      //var h = document.getElementById('name');
+      //h.appendChild(this.name);
+
+      document.getElementById("name")[0].innerHTML = this.name;
 
       // обрадуем пользователя что он подключен
       this.addMassage('Robot> Oк. Your name in chat ' + this.name);
