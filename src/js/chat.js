@@ -37,7 +37,7 @@ define('chat', ['session'],
     }
 
      chatObj.prototype.setUserData = function(userData) {
-       self.input.value = userData.name;
+       this.input.value = userData.name;
      };
 
     chatObj.prototype.askName = function() {
