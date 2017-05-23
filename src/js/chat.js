@@ -39,9 +39,6 @@ define('chat', ['session'],
     chatObj.prototype.setUserData = function(userData) {
       // узнаем имя, и запишем в поле name
       this.name = userData.name;
-      // вставить имя пользователя на страницу
-      document.getElementById('name').innerHTML = userData.name;
-
       // обрадуем пользователя что он подключен
       this.addMassage('Robot> Oк. Your name in chat ' + this.name);
       // добави к данным сообщения, имя данного пользователя
