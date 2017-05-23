@@ -43,7 +43,7 @@ define('chat', ['session'],
       //var h = document.getElementById('name');
       //h.appendChild(this.name);
 
-      document.getElementById("name")[0].innerHTML = 'dfdsg';
+      document.getElementById('name').innerHTML = userData.name;
 
       // обрадуем пользователя что он подключен
       this.addMassage('Robot> Oк. Your name in chat ' + this.name);
