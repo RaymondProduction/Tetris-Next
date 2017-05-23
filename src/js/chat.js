@@ -2,7 +2,7 @@ define('chat', ['session'],
   function(SessionModule) {
 
     // Module for organization chat
-    function chatObj(userData) {
+    function chatObj() {
       this.userData = userData;
       this.input = document.getElementById('m');
       this.session = new SessionModule('chat');
@@ -36,6 +36,10 @@ define('chat', ['session'],
         });
       });
     }
+
+     chatObj.prototype.setUserData = function(userData) {
+       self.input.value = userData.name;
+     };
 
     chatObj.prototype.askName = function() {
       // текст сообщения
@@ -120,7 +124,6 @@ define('chat', ['session'],
       // делаем ссылку сам на себя, так как часто
       // придется обращатся из функций обратного вызова
       var self = this;
-      self.input.value = userData.name;
       // задать вопрос новому пользователю
       this.askName();
       // подготовим слушателя на форму нажатия кнопки
