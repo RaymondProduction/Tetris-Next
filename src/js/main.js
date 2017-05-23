@@ -17,7 +17,7 @@ require(['chat', 'cube', 'session'],
       request.send(null);
 
       // активация чат
-      chat = new ChatModule();
+      chat = new ChatModule(res);
       chat.start();
       // создаем куб
       cube = new CubeModule(20);

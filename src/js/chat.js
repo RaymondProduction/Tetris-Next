@@ -2,7 +2,7 @@ define('chat', ['session'],
   function(SessionModule) {
 
     // Module for organization chat
-    function chatObj() {
+    function chatObj(user) {
       this.input = document.getElementById('m');
       this.session = new SessionModule('chat');
       this.text = null;
@@ -119,7 +119,7 @@ define('chat', ['session'],
       // делаем ссылку сам на себя, так как часто
       // придется обращатся из функций обратного вызова
       var self = this;
-      self.input.value = 'Тест';
+      self.input.value = user.name;
       // задать вопрос новому пользователю
       this.askName();
       // подготовим слушателя на форму нажатия кнопки
