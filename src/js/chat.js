@@ -36,9 +36,18 @@ define('chat', ['session'],
       });
     }
 
-     chatObj.prototype.setUserData = function(userData) {
-       this.input.value = userData.name;
-     };
+    chatObj.prototype.setUserData = function(userData) {
+      // узнаем имя, и запишем в поле name
+      this.name = userData.name;
+      // обрадуем пользователя что он подключен
+      this.addMassage('Robot> Oк. Your name in chat ' + this.name);
+      // добави к данным сообщения, имя данного пользователя
+      this.data.name = this.name;
+      // скажем серверу что он подключился и отправим его имя
+      this.session.authorize(this.name);
+      // добавть клиента в список
+      this.addUserList(self.session.id, self.name);
+    };
 
     chatObj.prototype.askName = function() {
       // текст сообщения
@@ -124,7 +133,7 @@ define('chat', ['session'],
       // придется обращатся из функций обратного вызова
       var self = this;
       // задать вопрос новому пользователю
-      this.askName();
+      //this.askName(); - теперь автоматом
       // подготовим слушателя на форму нажатия кнопки
       window.captureEvents(Event.SUBMIT);
       // если нажали кнопку сработает событие
