@@ -76,7 +76,7 @@ define('chat', ['session'],
       // если такого элемента не существует (не определен)
       if (this.firstLi == undefined) {
         // то тогда вставим новый иначе ...
-        this.messages.appendChild(message);
+        this.messages.appendChild(this.message);
       } else {
         // вставляем элемент списка перед предыдущим
         this.messages.insertBefore(this.message, this.firstLi);
