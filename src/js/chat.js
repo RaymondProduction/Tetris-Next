@@ -46,7 +46,7 @@ define('chat', ['session'],
       // скажем серверу что он подключился и отправим его имя
       this.session.authorize(this.name);
       // добавть клиента в список
-      this.addUserList(self.session.id, self.name);
+      this.addUserList(this.session.id, this.name);
     };
 
     chatObj.prototype.askName = function() {
