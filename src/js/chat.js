@@ -3,7 +3,6 @@ define('chat', ['session'],
 
     // Module for organization chat
     function chatObj() {
-      this.userData = userData;
       this.input = document.getElementById('m');
       this.session = new SessionModule('chat');
       this.text = null;
