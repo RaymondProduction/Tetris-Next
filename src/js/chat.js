@@ -39,10 +39,7 @@ define('chat', ['session'],
     chatObj.prototype.setUserData = function(userData) {
       // узнаем имя, и запишем в поле name
       this.name = userData.name;
-
-      //var h = document.getElementById('name');
-      //h.appendChild(this.name);
-
+      // вставить имя пользователя на страницу
       document.getElementById('name').innerHTML = userData.name;
 
       // обрадуем пользователя что он подключен
