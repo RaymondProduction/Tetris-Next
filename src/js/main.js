@@ -20,11 +20,11 @@ require(['chat', 'cube', 'session'],
       request.onload = function() {
         //alert(request.responseText);
         //console.log(request.responseText);
-       // var res = JSON.parse(request.responseText);
-        console.log(request.responseText);
-        // console.log('Login:',res.login);
-        // console.log('name: ', res.name);
-        // console.log('id:', res.id);
+        var res = JSON.parse(request.responseText);
+        //console.log(request.responseText);
+        console.log('Login:',res.login);
+        console.log('name: ', res.name);
+        console.log('id:', res.id);
       }
       request.send(null);
 
