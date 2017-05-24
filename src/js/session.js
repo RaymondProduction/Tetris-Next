@@ -26,7 +26,6 @@ define('session', ['socketio'],
       // если закрыли окно то отправить запрос что он
       // покинул сессию
       window.onbeforeunload = function(e) {
-        debugger;
         self.socket.emit('the client leaves', self.id);
       };
     };
